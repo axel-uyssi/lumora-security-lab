@@ -1,0 +1,92 @@
+version: "3.9"
+
+services:
+
+  # ─────────────────────────────────────────────
+  # POSTGRESQL (somente infra)
+  # ─────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: com.com.com.lumora.lumora.com.com.lumora.lumora-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: com.com.com.lumora.lumora.com.com.lumora.lumora
+      POSTGRES_USER: lumora_user
+      POSTGRES_PASSWORD: lumora_pass_2025
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - lumora-internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lumora_user -d com.com.com.lumora.lumora.com.com.lumora.lumora"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────
+  # REDIS (somente infra)
+  # ─────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: com.com.com.lumora.lumora.com.com.lumora.lumora-redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --requirepass redis_pass_2025
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - lumora-internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redis_pass_2025", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────
+  # PGADMIN (admin local)
+  # ─────────────────────────────────────────────
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: com.com.com.lumora.lumora.com.com.lumora.lumora-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@com.com.com.lumora.lumora.com.com.lumora.lumora.local
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "127.0.0.1:5050:80"
+    networks:
+      - lumora-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ─────────────────────────────────────────────
+  # FRONTEND (NGINX estático)
+  # ─────────────────────────────────────────────
+  frontend:
+    image: nginx:alpine
+    container_name: com.com.com.lumora.lumora.com.com.lumora.lumora-frontend
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      - ./frontend/com.com.com.lumora.lumora.com.com.lumora.lumora-hotels.html:/usr/share/nginx/html/index.html:ro
+
+  # ─────────────────────────────────────────────
+  # REDE (somente infra)
+  # ─────────────────────────────────────────────
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  lumora-internal:
+    driver: bridge
+    internal: true

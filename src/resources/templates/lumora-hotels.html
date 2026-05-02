@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumora Hotels — The World's Most Beautiful Places</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --white: #ffffff;
+    --black: #0a0a0a;
+    --gray-100: #f5f5f3;
+    --gray-200: #e8e8e4;
+    --gray-400: #9a9a94;
+    --gray-700: #3a3a38;
+    --accent: #c9a96e;
+    --accent-light: #f0e6d3;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 56px;
+    mix-blend-mode: normal;
+  }
+
+  nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .logo {
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    color: var(--white);
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo span {
+    color: var(--accent);
+  }
+
+  nav ul {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  nav ul a {
+    text-decoration: none;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    transition: color 0.3s;
+  }
+
+  nav ul a:hover { color: var(--accent); }
+
+  .nav-book {
+    position: relative;
+    z-index: 1;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 10px 24px;
+    cursor: pointer;
+    background: transparent;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .nav-book:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* HERO */
+  .hero {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&q=90');
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.04);
+    animation: slowZoom 18s ease-in-out infinite alternate;
+  }
+
+  @keyframes slowZoom {
+    from { transform: scale(1.04); }
+    to   { transform: scale(1.00); }
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.82) 0%,
+      rgba(0,0,0,0.25) 50%,
+      rgba(0,0,0,0.1) 100%
+    );
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 56px 80px;
+    max-width: 760px;
+  }
+
+  .hero-tag {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 80px);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    color: var(--white);
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+    max-width: 440px;
+    margin-bottom: 40px;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .btn-primary {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--accent);
+    border: none;
+    padding: 16px 40px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+  }
+
+  .btn-primary:hover { opacity: 0.85; }
+
+  .btn-ghost {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.3s;
+  }
+
+  .btn-ghost:hover { color: var(--white); }
+
+  .btn-ghost::after {
+    content: '→';
+    font-size: 16px;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    right: 56px;
+    bottom: 80px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: rgba(255,255,255,0.25);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    animation: scrollDrop 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollDrop {
+    from { top: -100%; }
+    to   { top: 200%; }
+  }
+
+  /* MARQUEE STRIP */
+  .marquee-strip {
+    background: var(--accent);
+    overflow: hidden;
+    padding: 14px 0;
+  }
+
+  .marquee-inner {
+    display: flex;
+    gap: 64px;
+    animation: marquee 28s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .marquee-item {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .marquee-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.35);
+  }
+
+  /* DESTINATIONS GRID */
+  .section {
+    padding: 120px 56px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 64px;
+  }
+
+  .section-label {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--white);
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .view-all {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.3s;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .view-all:hover { color: var(--accent); }
+
+  /* HOTEL CARDS */
+  .grid-featured {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 16px;
+  }
+
+  .hotel-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background: #111;
+  }
+
+  .hotel-card:first-child {
+    grid-row: 1 / 3;
+  }
+
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .hotel-card:first-child .card-img {
+    height: 680px;
+  }
+
+  .hotel-card:not(:first-child) .card-img {
+    height: 330px;
+  }
+
+  .hotel-card:hover .card-img {
+    transform: scale(1.06);
+  }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.78) 0%,
+      rgba(0,0,0,0.2) 55%,
+      transparent 100%
+    );
+    transition: background 0.4s;
+  }
+
+  .hotel-card:hover .card-overlay {
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.88) 0%,
+      rgba(0,0,0,0.3) 60%,
+      transparent 100%
+    );
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: var(--black);
+    padding: 5px 12px;
+  }
+
+  .card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 32px 32px 28px;
+  }
+
+  .card-location {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-location svg {
+    width: 10px;
+    height: 10px;
+    fill: var(--accent);
+  }
+
+  .card-name {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+
+  .hotel-card:first-child .card-name {
+    font-size: 34px;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .card-price {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .card-price strong {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--white);
+    font-family: 'Georgia', serif;
+  }
+
+  .card-stars {
+    display: flex;
+    gap: 3px;
+  }
+
+  .star {
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  .card-arrow {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 16px;
+    transition: all 0.3s;
+  }
+
+  .hotel-card:hover .card-arrow {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--black);
+  }
+
+  /* ROW CARDS */
+  .grid-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .row-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .row-card .card-img {
+    height: 420px;
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .row-card:hover .card-img { transform: scale(1.06); }
+
+  /* PHILOSOPHY */
+  .philosophy {
+    padding: 120px 56px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .philosophy-text .section-label { margin-bottom: 20px; }
+
+  .philosophy-text h2 {
+    font-size: clamp(28px, 3vw, 42px);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 28px;
+    color: var(--white);
+  }
+
+  .philosophy-text p {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.85;
+    margin-bottom: 20px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .stat-item {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 24px;
+  }
+
+  .stat-num {
+    font-size: 44px;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-num span {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .stat-label {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+  }
+
+  /* EXPERIENCE STRIP */
+  .experience-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .exp-item {
+    padding: 56px 40px;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    transition: background 0.3s;
+  }
+
+  .exp-item:last-child { border-right: none; }
+  .exp-item:hover { background: rgba(255,255,255,0.02); }
+
+  .exp-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 24px;
+    opacity: 0.6;
+  }
+
+  .exp-title {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+
+  .exp-desc {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.75;
+  }
+
+  /* TESTIMONIAL */
+  .testimonial-section {
+    padding: 120px 56px;
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .quote-mark {
+    font-size: 80px;
+    color: var(--accent);
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: -20px;
+    font-family: 'Georgia', serif;
+  }
+
+  .testimonial-text {
+    font-size: clamp(20px, 2.5vw, 30px);
+    font-weight: 400;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 36px;
+  }
+
+  .testimonial-author {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* CTA BANNER */
+  .cta-banner {
+    margin: 0 56px 120px;
+    position: relative;
+    overflow: hidden;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1439130490301-25e322d88054?w=1600&q=85');
+    background-size: cover;
+    background-position: center 40%;
+  }
+
+  .cta-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 2;
+    padding: 80px;
+    max-width: 600px;
+  }
+
+  .cta-content h2 {
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    color: var(--white);
+  }
+
+  .cta-content p {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 40px;
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #050505;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 64px 56px 40px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+
+  .footer-brand .logo {
+    font-size: 20px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .footer-brand p {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.8;
+    max-width: 240px;
+  }
+
+  .footer-col h4 {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-col ul a {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .footer-col ul a:hover { color: var(--accent); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-copy {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .footer-langs {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer-langs a {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.25);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .footer-langs a:hover, .footer-langs a.active { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Lu<span>mo</span>ra</div>
+  <ul>
+    <li><a href="#">Destinations</a></li>
+    <li><a href="#">Experiences</a></li>
+    <li><a href="#">Collection</a></li>
+    <li><a href="#">Journal</a></li>
+  </ul>
+  <button class="nav-book">Reserve Now</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Featured Destination — 2025</div>
+    <h1>Where the<br>world becomes <em>art</em></h1>
+    <p class="hero-sub">Curated sanctuaries in the most breathtaking places on earth. Architecture, nature, and silence — perfectly balanced.</p>
+    <div class="hero-cta">
+      <button class="btn-primary">Explore Collection</button>
+      <button class="btn-ghost">Watch Story</button>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <div class="marquee-item">Santorini, Greece <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Patagonia, Argentina <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Kyoto, Japan <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Lofoten, Norway <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Maldives <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Tuscany, Italy <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Bora Bora <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Cappadocia, Turkey <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Santorini, Greece <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Patagonia, Argentina <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Kyoto, Japan <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Lofoten, Norway <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Maldives <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Tuscany, Italy <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Bora Bora <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Cappadocia, Turkey <div class="marquee-dot"></div></div>
+  </div>
+</div>
+
+<!-- FEATURED DESTINATIONS -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Curated Properties</div>
+      <h2 class="section-title">Featured <em>Destinations</em></h2>
+    </div>
+    <a href="#" class="view-all">View All 48 Properties →</a>
+  </div>
+
+  <div class="grid-featured">
+    <!-- Main card -->
+    <div class="hotel-card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1570213489059-0aac6626cade?w=1200&q=85" alt="Santorini Cliff Hotel" loading="lazy">
+      <div class="card-overlay"></div>
+      <div class="card-badge">Editor's Choice</div>
+      <div class="card-info">
+        <div class="card-location">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          Oia, Santorini — Greece
+        </div>
+        <div class="card-name">Caldera Villas<br>Infinity Resort</div>
+        <div class="card-meta">
+          <div>
+            <div class="card-price">From <strong>€ 1.840</strong> / night</div>
+            <div class="card-stars" style="margin-top:6px">
+              <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+            </div>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right top -->
+    <div class="hotel-card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8?w=900&q=85" alt="Lofoten Arctic Hotel" loading="lazy">
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <div class="card-location">Lofoten Islands — Norway</div>
+        <div class="card-name">Arctic Glass Lodge</div>
+        <div class="card-meta">
+          <div class="card-price">From <strong>€ 980</strong> / night</div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right bottom -->
+    <div class="hotel-card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=900&q=85" alt="Maldives Overwater Villa" loading="lazy">
+      <div class="card-overlay"></div>
+      <div class="card-badge">New</div>
+      <div class="card-info">
+        <div class="card-location">North Malé Atoll — Maldives</div>
+        <div class="card-name">Overwater Pearl Villas</div>
+        <div class="card-meta">
+          <div class="card-price">From <strong>€ 2.100</strong> / night</div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row of 3 -->
+  <div class="grid-row">
+    <div class="row-card hotel-card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=85" alt="Kyoto Ryokan" loading="lazy">
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <div class="card-location">Arashiyama — Kyoto, Japan</div>
+        <div class="card-name">Bamboo Forest Ryokan</div>
+        <div class="card-meta">
+          <div class="card-price">From <strong>€ 740</strong> / night</div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row-card hotel-card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1502786129293-79981df4e689?w=800&q=85" alt="Tuscany Villa" loading="lazy">
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <div class="card-location">Val d'Orcia — Tuscany, Italy</div>
+        <div class="card-name">Il Belvedere Estate</div>
+        <div class="card-meta">
+          <div class="card-price">From <strong>€ 1.200</strong> / night</div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row-card hotel-card">
+      <img class="card-img" src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=800&q=85" alt="Patagonia Mountain Lodge" loading="lazy">
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <div class="card-location">Torres del Paine — Patagonia</div>
+        <div class="card-name">Wild Range Eco Lodge</div>
+        <div class="card-meta">
+          <div class="card-price">From <strong>€ 890</strong> / night</div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<div class="philosophy">
+  <div class="philosophy-text">
+    <div class="section-label">Our Philosophy</div>
+    <h2>Beauty is not a luxury.<br>It is a <em>necessity</em>.</h2>
+    <p>We believe that extraordinary surroundings awaken something fundamental in the human experience. Each property in our collection exists in harmony with its landscape — never imposing, always revealing.</p>
+    <p>From the volcanic caldera cliffs of Greece to the silence of arctic fjords, we hand-select fewer than 50 properties worldwide, each meeting our most exacting standard: breathtaking location, seamless design, and irreplaceable stillness.</p>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-num">48<span>+</span></div>
+      <div class="stat-label">Properties Worldwide</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">31</div>
+      <div class="stat-label">Countries</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">12<span>k</span></div>
+      <div class="stat-label">Guests Per Year</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">9<span>.8</span></div>
+      <div class="stat-label">Average Rating</div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPERIENCE STRIP -->
+<div class="experience-strip">
+  <div class="exp-item">
+    <svg class="exp-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="18" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
+      <path d="M20 10 L20 30 M10 20 L30 20" stroke="rgba(201,169,110,0.8)" stroke-width="1.5"/>
+    </svg>
+    <div class="exp-title">Curated Arrival</div>
+    <div class="exp-desc">Private transfers, champagne welcome, and a hand-written personal note from the property director — every arrival is a ritual.</div>
+  </div>
+  <div class="exp-item">
+    <svg class="exp-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="14" width="24" height="16" rx="2" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
+      <path d="M14 14 L14 10 Q14 8 16 8 L24 8 Q26 8 26 10 L26 14" stroke="rgba(201,169,110,0.8)" stroke-width="1.5"/>
+    </svg>
+    <div class="exp-title">Local Immersion</div>
+    <div class="exp-desc">Each stay includes a bespoke cultural program — private market visits, chef tastings, and encounters with local artisans.</div>
+  </div>
+  <div class="exp-item">
+    <svg class="exp-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 6 L22 14 L30 14 L24 19 L26 27 L20 22 L14 27 L16 19 L10 14 L18 14 Z" stroke="rgba(255,255,255,0.6)" stroke-width="1" fill="none"/>
+      <circle cx="20" cy="17" r="3" stroke="rgba(201,169,110,0.8)" stroke-width="1.5"/>
+    </svg>
+    <div class="exp-title">The Quiet Hours</div>
+    <div class="exp-desc">No conferences, no events. Our properties are sanctuaries for thought, presence, and the art of doing nothing — beautifully.</div>
+  </div>
+  <div class="exp-item">
+    <svg class="exp-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 32 Q14 16 20 20 Q26 24 32 8" stroke="rgba(201,169,110,0.8)" stroke-width="1.5" fill="none"/>
+      <circle cx="8" cy="32" r="2" fill="rgba(255,255,255,0.6)"/>
+      <circle cx="32" cy="8" r="2" fill="rgba(255,255,255,0.6)"/>
+    </svg>
+    <div class="exp-title">Seamless Planning</div>
+    <div class="exp-desc">Your dedicated travel curator handles every detail — from flight coordination to in-suite temperature preferences.</div>
+  </div>
+</div>
+
+<!-- TESTIMONIAL -->
+<div class="testimonial-section">
+  <div class="quote-mark">"</div>
+  <p class="testimonial-text">Arriving at the lodge, with the glaciers stretching to the horizon, I understood for the first time what it means to be truly present. Lumora doesn't sell accommodation — they sell perspective.</p>
+  <div class="testimonial-author">— Isabelle Moreau, Paris · Guest since 2019</div>
+</div>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+  <div class="cta-bg"></div>
+  <div class="cta-overlay"></div>
+  <div class="cta-content">
+    <div class="section-label" style="margin-bottom:20px">Begin Your Journey</div>
+    <h2>Every great story<br>starts with a<br><em>single destination.</em></h2>
+    <p>Speak with one of our travel curators and discover which of our 48 properties belongs in your story.</p>
+    <button class="btn-primary">Request a Consultation</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo">Lu<span>mo</span>ra</span>
+      <p>A curated collection of the world's most breathtaking hotel properties. Founded on the belief that beauty is transformative.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Collection</h4>
+      <ul>
+        <li><a href="#">Mediterranean</a></li>
+        <li><a href="#">Arctic & Nordic</a></li>
+        <li><a href="#">Tropical Islands</a></li>
+        <li><a href="#">Mountain Retreats</a></li>
+        <li><a href="#">Desert Sanctuaries</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Selection Process</a></li>
+        <li><a href="#">Journal</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#">hello@com.lumora.lumora.lumora.lumora.com</a></li>
+        <li><a href="#">+44 20 7946 0821</a></li>
+        <li><a href="#">Concierge Line</a></li>
+        <li><a href="#">Partner With Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Lumora Hotels. All rights reserved.</span>
+    <div class="footer-langs">
+      <a href="#" class="active">EN</a>
+      <a href="#">FR</a>
+      <a href="#">DE</a>
+      <a href="#">JA</a>
+      <a href="#">PT</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
