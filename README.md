@@ -34,19 +34,19 @@ The frontend was integrated into the backend's static resources, making the enti
 
 ```
 ┌─────────────────────────────────────────────┐
-│              Spring Boot Application         │
+│              Spring Boot Application        │
 │                                             │
-│  ┌──────────┐   ┌──────────┐   ┌─────────┐ │
-│  │Controller│ → │ Service  │ → │  Repo   │ │
-│  └──────────┘   └──────────┘   └─────────┘ │
+│  ┌──────────┐   ┌──────────┐   ┌─────────┐  │
+│  │Controller│ → │ Service  │ → │  Repo   │  │
+│  └──────────┘   └──────────┘   └─────────┘  │
 │        ↑               ↑                    │
 │   JWT Filter      PasswordEncoder           │
 │        ↑               ↑                    │
 │   Spring Security Filter Chain              │
 │                                             │
-│  ┌─────────────────────────────────────┐   │
-│  │  Static Resources (Frontend SPA)    │   │
-│  └─────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────┐    │
+│  │  Static Resources (Frontend SPA)    │    │ 
+│  └─────────────────────────────────────┘    │
 └─────────────────────────────────────────────┘
 ```
 
