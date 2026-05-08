@@ -73,8 +73,48 @@ This lab follows a **structured red-team / blue-team approach**:
 
 ### Architecture
 
-![Lumora Lab Environment](./docs/lab-architecture.svg)
+┌────────────────────┐
+│   Kali Linux       │
+│   (Attacker)       │
+│                    │
+│ • Burp Suite       │
+│ • Hydra            │
+│ • nmap             │
+│ • Postman          │
+└──────────┬─────────┘
+│
+│ HTTP/HTTPS (Port 8081)
+│
+▼
+┌──────────────────────────────────────────────────┐
+│          Docker Network (bridge)                 │
+│         lumora-internal                          │
+│                                                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌─────────┐ │
+│  │ Spring Boot  │  │ PostgreSQL   │  │ Redis   │ │
+│  │              │  │              │  │         │ │
+│  │    :8081     │  │    :5432     │  │ :6379   │ │
+│  └──────────────┘  └──────────────┘  └─────────┘ │
+│         │                 ▲             ▲        │
+│         └─────────────────┴─────────────┘        │
+│                 (queries & cache)                │
+│                                                  │
+│  ┌──────────────────────────────────────────┐    │
+│  │     PgAdmin (Database Admin UI)          │    │
+│  │              :5050                       │    │
+│  └──────────────────────────────────────────┘    │
+│                                                  │
+└──────────────────────────────────────────────────┘
 
+### Testing Methodology
+
+| Phase | Tool | Target | Defense |
+|-------|------|--------|---------|
+| **Reconnaissance** | nmap, netstat | Port discovery | Network isolation |
+| **Authentication** | Hydra | `/api/v1/users/login` | Account lockout ✅ |
+| **JWT Analysis** | Burp, jwt.io | Token validation | HMAC-SHA256 ✅ |
+| **Authorization** | Postman, Burp | Protected endpoints | 401/403 enforcement ✅ |
+| **Input Validation** | SQLmap | SQL Injection | PreparedStatements 🔄 |
 
 ### Docker Compose
 - **Isolated network:** `lumora-internal`
