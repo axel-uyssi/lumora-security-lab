@@ -72,6 +72,7 @@ This lab follows a **structured red-team / blue-team approach**:
 
 
 ### Architecture
+```
 
 ┌────────────────────┐
 │   Kali Linux       │
@@ -105,6 +106,8 @@ This lab follows a **structured red-team / blue-team approach**:
 │  └──────────────────────────────────────────┘    │
 │                                                  │
 └──────────────────────────────────────────────────┘
+
+```
 
 ### Testing Methodology
 
