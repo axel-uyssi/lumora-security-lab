@@ -74,7 +74,20 @@ This lab follows a **structured red-team / blue-team approach**:
 
 ### Architecture
 
-![Uploading image.png…]()
+┌─────────────────┐
+│   Kali Linux    │ ← Attacker
+│  (Burp, Hydra)  │
+└────────┬────────┘
+│ HTTP/HTTPS
+▼
+┌─────────────────┐
+│  Docker Network │
+├─────────────────┤
+│  Spring Boot    │ :8081
+│  PostgreSQL     │ :5432
+│  Redis          │ :6379
+│  PgAdmin        │ :5050
+└─────────────────┘
 
 
 ### Docker Compose
