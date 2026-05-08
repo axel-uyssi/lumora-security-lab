@@ -70,75 +70,11 @@ This lab follows a **structured red-team / blue-team approach**:
 | **CORS Policy** | Restricted origins | ✅ VALIDATED |
 | **SQL Injection** | JPA PreparedStatements | 🔄 TESTING |
 
-## 🛠️ Lab Environment Setup
-
-## 🔬 Lab Environment Setup
 
 ### Architecture
 
-```html
-<svg width="100%" viewBox="0 0 680 140" role="img">
-  <title>Lumora Lab Environment Setup</title>
-  <desc>Inline architecture showing Kali Linux attacker connected via HTTP/HTTPS to Docker network with Spring Boot API, PostgreSQL, Redis, and PgAdmin containers.</desc>
-  
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </marker>
-  </defs>
+![Lumora Lab Environment](./docs/lab-architecture.svg)
 
-  <!-- Kali Linux (Attacker) -->
-  <g class="c-red">
-    <rect x="20" y="20" width="100" height="100" rx="8" stroke-width="0.5"/>
-    <text class="th" x="70" y="50" text-anchor="middle">Kali Linux</text>
-    <text class="ts" x="70" y="68" text-anchor="middle">Attacker</text>
-    <text class="ts" x="70" y="84" text-anchor="middle">(Burp, Hydra)</text>
-  </g>
-
-  <!-- Arrow -->
-  <line x1="120" y1="70" x2="145" y2="70" class="arr" marker-end="url(#arrow)" stroke-width="1.5"/>
-  <text class="ts" x="132" y="62" text-anchor="middle">HTTP/HTTPS</text>
-
-  <!-- Docker Network Container -->
-  <g class="c-blue">
-    <rect x="145" y="20" width="515" height="100" rx="8" stroke-width="0.5"/>
-    <text class="th" x="402" y="40" text-anchor="middle">Docker Network</text>
-  </g>
-
-  <!-- Spring Boot -->
-  <g class="c-teal">
-    <rect x="160" y="50" width="85" height="55" rx="6" stroke-width="0.5"/>
-    <text class="th" x="202" y="68" text-anchor="middle">Spring Boot</text>
-    <text class="ts" x="202" y="86" text-anchor="middle">:8081</text>
-  </g>
-
-  <!-- PostgreSQL -->
-  <g class="c-coral">
-    <rect x="260" y="50" width="85" height="55" rx="6" stroke-width="0.5"/>
-    <text class="th" x="302" y="68" text-anchor="middle">PostgreSQL</text>
-    <text class="ts" x="302" y="86" text-anchor="middle">:5432</text>
-  </g>
-
-  <!-- Redis -->
-  <g class="c-amber">
-    <rect x="360" y="50" width="80" height="55" rx="6" stroke-width="0.5"/>
-    <text class="th" x="400" y="68" text-anchor="middle">Redis</text>
-    <text class="ts" x="400" y="86" text-anchor="middle">:6379</text>
-  </g>
-
-  <!-- PgAdmin -->
-  <g class="c-purple">
-    <rect x="455" y="50" width="85" height="55" rx="6" stroke-width="0.5"/>
-    <text class="th" x="497" y="68" text-anchor="middle">PgAdmin</text>
-    <text class="ts" x="497" y="86" text-anchor="middle">:5050</text>
-  </g>
-
-  <!-- Internal connections (subtle) -->
-  <line x1="245" y1="77" x2="260" y2="77" stroke="var(--color-border-secondary)" stroke-width="0.5" stroke-dasharray="2 2"/>
-  <line x1="345" y1="77" x2="360" y2="77" stroke="var(--color-border-secondary)" stroke-width="0.5" stroke-dasharray="2 2"/>
-  <line x1="440" y1="77" x2="455" y2="77" stroke="var(--color-border-secondary)" stroke-width="0.5" stroke-dasharray="2 2"/>
-</svg>
-```
 
 ### Docker Compose
 - **Isolated network:** `lumora-internal`
