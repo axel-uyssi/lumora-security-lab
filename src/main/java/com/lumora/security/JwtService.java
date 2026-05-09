@@ -1,28 +1,5 @@
 package com.lumora.security;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CORREÇÃO: jjwt 0.12+ mudou a API completamente
-//
-// ANTES (jjwt 0.9 — ANTIGO, causava os erros):
-//   Jwts.parserBuilder()          → não existe mais
-//   .setSigningKey(key)           → deprecated
-//   .setSubject(email)            → deprecated
-//   .setIssuedAt(date)            → deprecated
-//   .setExpiration(date)          → deprecated
-//   .signWith(key, algorithm)     → deprecated
-//   .parseClaimsJws(token)        → deprecated
-//
-// DEPOIS (jjwt 0.12 — CORRETO):
-//   Jwts.parser()                 → novo método
-//   .verifyWith(key)              → novo
-//   .subject(email)               → novo
-//   .issuedAt(date)               → novo
-//   .expiration(date)             → novo
-//   .signWith(key)                → novo (detecta algoritmo automaticamente)
-//   .parseSignedClaims(token)     → novo
-//   .getPayload()                 → novo
-// ─────────────────────────────────────────────────────────────────────────────
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -41,32 +18,44 @@ import java.util.Date;
 public class JwtService {
 
     private final SecretKey signingKey;
-    private final long      jwtExpiration;
+    private final long jwtExpiration;
 
     public JwtService(
             @Value("${lumora.jwt.secret}") String secret,
             @Value("${lumora.jwt.expiration-ms}") long jwtExpiration
     ) {
-        this.signingKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
-        this.jwtExpiration = jwtExpiration;
+        try {
+            byte[] keyBytes = secret.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+
+            if (keyBytes.length < 32) {
+                throw new IllegalArgumentException(
+                        "JWT secret precisa ter pelo menos 32 bytes"
+                );
+            }
+
+            this.signingKey = Keys.hmacShaKeyFor(keyBytes);
+            this.jwtExpiration = jwtExpiration;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao inicializar JWT", e);
+        }
     }
 
-
-    // ── Gera o token JWT ──────────────────────────────────────────────────────
+    // ── Gera o token JWT ─────────────────────────────────────────
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
-                .subject(userDetails.getUsername())              // "sub" = email
-                .claim("roles", userDetails.getAuthorities()     // roles no payload
+                .subject(userDetails.getUsername())
+                .claim("roles", userDetails.getAuthorities()
                         .stream()
                         .map(a -> a.getAuthority())
                         .toList())
-                .issuedAt(new Date())                            // "iat" = emitido em
-                .expiration(new Date(System.currentTimeMillis() + jwtExpiration)) // "exp"
-                .signWith(signingKey)                            // assina com HMAC-SHA256
-                .compact();                                      // serializa para String
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .signWith(signingKey)
+                .compact();
     }
 
-    // ── Valida o token ────────────────────────────────────────────────────────
+    // ── Valida o token ───────────────────────────────────────────
     public boolean isValid(String token, UserDetails userDetails) {
         try {
             String username = extractUsername(token);
@@ -77,30 +66,28 @@ public class JwtService {
         }
     }
 
-    // ── Extrai o email do token ───────────────────────────────────────────────
+    // ── Extrai username ──────────────────────────────────────────
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
 
-    // ── Verifica expiração ────────────────────────────────────────────────────
+    // ── Verifica expiração ───────────────────────────────────────
     private boolean isTokenExpired(String token) {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
 
-    // ── Parse completo do token ───────────────────────────────────────────────
+    // ── Parse do token ───────────────────────────────────────────
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .verifyWith(signingKey)          // verifica assinatura
+                .verifyWith(signingKey)
                 .build()
-                .parseSignedClaims(token)        // faz o parse
-                .getPayload();                   // retorna o payload (Claims)
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
-    // ── Retorna tempo de expiração ────────────────────────────────────────────
     public long getExpirationMs() {
         return jwtExpiration;
     }
 }
-
 
 

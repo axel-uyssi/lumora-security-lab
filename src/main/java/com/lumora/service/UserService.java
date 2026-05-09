@@ -11,13 +11,12 @@ import com.lumora.security.LoginRequest;
 import com.lumora.security.JwtService;
 
 import lombok.extern.slf4j.Slf4j;
-
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.*;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +26,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 @Transactional(readOnly = true)
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private static final int MAX_ATTEMPTS = 5;
 
@@ -48,6 +47,9 @@ public class UserService implements UserDetailsService {
         this.authenticationManager = authenticationManager;
     }
 
+    // ─────────────────────────────────────────────
+    // REGISTER
+    // ─────────────────────────────────────────────
     @Transactional
     public AuthResponse register(UserRequest request) {
 
@@ -78,6 +80,9 @@ public class UserService implements UserDetailsService {
         );
     }
 
+    // ─────────────────────────────────────────────
+    // LOGIN
+    // ─────────────────────────────────────────────
     @Transactional
     public AuthResponse login(LoginRequest request) {
 
@@ -113,6 +118,9 @@ public class UserService implements UserDetailsService {
         );
     }
 
+    // ─────────────────────────────────────────────
+    // USUÁRIO ATUAL
+    // ─────────────────────────────────────────────
     public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -121,16 +129,21 @@ public class UserService implements UserDetailsService {
         }
 
         return userRepository.findByEmail(auth.getName())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "email", auth.getName()));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User", "email", auth.getName()));
     }
 
     public UserResponse getProfile() {
         return UserResponse.from(getCurrentUser());
     }
 
+    // ─────────────────────────────────────────────
+    // ADMIN
+    // ─────────────────────────────────────────────
     public UserResponse getById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User", "id", id));
         return UserResponse.from(user);
     }
 
@@ -154,12 +167,9 @@ public class UserService implements UserDetailsService {
         userRepository.updateEnabledStatus(id, status);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email.toLowerCase())
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + email));
-    }
-
+    // ─────────────────────────────────────────────
+    // SEGURANÇA INTERNA
+    // ─────────────────────────────────────────────
     private void handleFailedLogin(User user) {
         int attempts = user.getFailedAttempts() + 1;
 

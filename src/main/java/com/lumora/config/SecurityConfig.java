@@ -1,7 +1,6 @@
 package com.lumora.config;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,58 +16,99 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
+import com.lumora.security.JwtFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    // ─────────────────────────────────────────────────────────────
-    // 🔐 Password Encoder (RESOLVE SEU ERRO)
-    // ─────────────────────────────────────────────────────────────
+    private final JwtFilter jwtFilter;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // 🔐 Authentication Manager (necessário para login futuro)
-    // ─────────────────────────────────────────────────────────────
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // 🔐 Configuração de segurança HTTP
-    // ─────────────────────────────────────────────────────────────
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowedOrigins(List.of("*"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                // ❌ Desabilita CSRF (API REST)
+                // CORS
+                .cors(cors -> {})
+
+                // CSRF desativado (JWT)
                 .csrf(csrf -> csrf.disable())
 
-                // ❌ Sem sessão (JWT stateless)
+                // Stateless (JWT)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // 🔓 Rotas públicas
+                // 🔓 ROTAS PÚBLICAS (frontend + auth + docs)
                 .authorizeHttpRequests(auth -> auth
+
+                        // FRONTEND (ESSENCIAL)
                         .requestMatchers(
-                                "/api/auth/**",   // login / register
-                                "/h2-console/**", // console H2
+                                "/",
+                                "/index.html",
+                                "/favicon.ico",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/static/**"
+                        ).permitAll()
+
+                        // AUTH
+                        .requestMatchers(
+                                "/api/v1/users/login",
+                                "/api/v1/users/register"
+                        ).permitAll()
+
+                        // DOCS / H2
+                        .requestMatchers(
+                                "/h2-console/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**"
                         ).permitAll()
 
-                        // 🔒 resto precisa autenticação
+                        // RESTO PROTEGIDO
                         .anyRequest().authenticated()
                 )
 
-                // ⚠️ necessário pro H2 funcionar
+                // JWT FILTER
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+
+                // H2 console (frames)
                 .headers(headers ->
                         headers.frameOptions(frame -> frame.disable())
                 );
