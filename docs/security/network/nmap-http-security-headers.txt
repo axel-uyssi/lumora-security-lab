@@ -1,0 +1,64 @@
+┌──(Kali㉿axelzin)-[~]
+└─$ nmap
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-05-09 15:54 -0300
+WARNING: No targets were specified, so 0 hosts scanned.
+Nmap done: 0 IP addresses (0 hosts up) scanned in 0.02 seconds
+
+┌──(Kali㉿axelzin)-[~]
+└─$ nmap -p 8081 172.31.160.1
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-05-09 16:02 -0300
+Nmap scan report for axelzin.mshome.net (172.31.160.1)
+Host is up (0.00059s latency).
+
+PORT     STATE SERVICE
+8081/tcp open  blackice-icecap
+MAC Address: 00:15:5D:C8:24:E1 (Microsoft)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.21 seconds
+
+┌──(Kali㉿axelzin)-[~]
+└─$ nmap -p 8081 -sV -sC --script=http-headers,http-methods 172.31.160.1
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-05-09 16:04 -0300
+Nmap scan report for axelzin.mshome.net (172.31.160.1)
+Host is up (0.00040s latency).
+
+PORT     STATE SERVICE VERSION
+8081/tcp open  http    Apache Tomcat (language: en)
+| http-methods:
+|_  Supported Methods: GET HEAD OPTIONS POST
+| http-headers:
+|   Vary: Origin
+|   Vary: Access-Control-Request-Method
+|   Vary: Access-Control-Request-Headers
+|   Last-Modified: Sat, 02 May 2026 17:58:15 GMT
+|   Accept-Ranges: bytes
+|   X-Content-Type-Options: nosniff
+|   X-XSS-Protection: 0
+|   Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+|   Pragma: no-cache
+|   Expires: 0
+|   Content-Type: text/html;charset=ISO-8859-1
+|   Content-Language: pt-BR
+|   Content-Length: 73215
+|   Date: Sat, 09 May 2026 19:04:38 GMT
+|   Connection: close
+|
+|_  (Request type: HEAD)
+MAC Address: 00:15:5D:C8:24:E1 (Microsoft)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 6.51 seconds
+
+┌──(Kali㉿axelzin)-[~]
+└─$ nmap -p 8081 -sV --script=banner,http-enum 172.31.160.1
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-05-09 18:40 -0300
+Nmap scan report for axelzin.mshome.net (172.31.160.1)
+Host is up (0.00043s latency).
+
+PORT     STATE SERVICE VERSION
+8081/tcp open  http    Apache Tomcat (language: en)
+MAC Address: 00:15:5D:C8:24:E1 (Microsoft)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 21.48 seconds
+
