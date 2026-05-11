@@ -1,1 +1,196 @@
+Security Assessment Report
+HTTP Security Headers & Endpoint Enumeration Test
 
+Date: 2026-05-10
+Target Host: 192.168.1.156
+Service: Web Application / API
+Port: 8081
+Environment: Authorized internal security laboratory (Lumora API)
+
+Executive Summary
+
+This security assessment was conducted against a Spring Boot-based API to evaluate HTTP security header implementation and observe application behavior under endpoint enumeration using fuzzing techniques.
+
+The analysis combined HTTP security header inspection and automated route discovery using ffuf. The results indicate that the application enforces strong access control at the framework level through Spring Security, consistently blocking unauthorized access attempts.
+
+However, missing HTTP security headers were identified, and the application behavior under fuzzing suggests that all invalid or unknown routes are uniformly intercepted by the security filter chain, producing consistent 403 Forbidden responses.
+
+This behavior confirms effective request interception but introduces ambiguity during reconnaissance activities.
+
+Scope of Assessment
+
+The following tests were executed:
+
+HTTP Security Headers Verification
+Endpoint Enumeration via Fuzzing (ffuf)
+Spring Security Filter Chain Behavior Analysis
+Unauthorized Request Handling Validation
+Test 1 — HTTP Security Headers Verification
+Objective
+
+Verify whether the application exposes recommended HTTP security headers by default.
+
+Command Executed
+nmap -p 8081 --script http-security-headers 192.168.1.156
+Result
+
+The analysis indicates missing or incomplete implementation of key HTTP security headers:
+
+X-Frame-Options
+Content-Security-Policy
+X-Content-Type-Options
+Referrer-Policy
+Risk Analysis
+Missing X-Frame-Options
+
+Without this header, the application may be exposed to clickjacking attacks, where malicious websites embed the application within invisible frames to manipulate user interactions.
+
+Missing Content-Security-Policy (CSP)
+
+The absence of CSP increases exposure to:
+
+Cross-Site Scripting (XSS)
+Script injection
+Unauthorized resource loading
+Client-side content manipulation
+Missing X-Content-Type-Options
+
+Without nosniff, browsers may attempt to interpret content incorrectly, increasing the risk of:
+
+MIME-type confusion attacks
+Execution of unintended content
+Test 2 — Endpoint Enumeration via FFUF
+Objective
+
+Identify hidden endpoints, administrative routes, and API resources through fuzzing.
+
+Tool Used
+
+ffuf
+
+Command Executed
+ffuf -X POST \
+-u http://192.168.1.156:8081/FUZZ \
+-w /usr/share/wordlists/dirb/common.txt \
+-mc 200,401,403
+Result Summary
+
+The fuzzing process returned multiple 403 Forbidden responses for various endpoints, including:
+
+/zero
+/yt
+/zh-cn
+/zip
+/zend
+/zboard
+
+All responses exhibited:
+
+Status: 403
+Size: 0
+Minimal response body
+Low latency (~10–25ms)
+Security Observation
+
+The uniform 403 Forbidden responses indicate that requests are being intercepted at the framework level before reaching application controllers.
+
+Logs from the Spring Boot runtime confirmed this behavior:
+
+FilterChainProxy : Securing POST /zero
+FilterChainProxy : Securing POST /yt
+AnonymousAuthenticationFilter :
+Set SecurityContextHolder to anonymous SecurityContext
+Technical Interpretation
+
+The request lifecycle demonstrates:
+
+1. Pre-controller interception
+
+All requests are captured by the Spring Security filter chain before reaching any business logic.
+
+2. Anonymous authentication context
+
+Requests without valid credentials are automatically assigned an anonymous security context.
+
+3. Centralized blocking behavior
+
+All unauthorized requests are consistently rejected with 403 Forbidden.
+
+Request Flow Model
+
+ffuf request→Spring Security Filter Chain→AnonymousAuthenticationFilter→403 Forbidden
+
+Vulnerabilities Identified
+[VULN-001] Missing HTTP Security Headers
+
+Severity: Medium
+Category: Security Misconfiguration
+OWASP Reference: A05:2021 – Security Misconfiguration
+
+Description
+
+The application does not implement essential HTTP security headers required for modern browser protection mechanisms.
+
+Impact
+Increased exposure to clickjacking
+Potential XSS exploitation risk
+Weak client-side security posture
+Recommendation
+
+Implement global security headers via Spring Security:
+
+http
+    .headers(headers -> headers
+        .frameOptions(frame -> frame.deny())
+        .contentSecurityPolicy(csp ->
+            csp.policyDirectives("default-src 'self'")
+        )
+        .contentTypeOptions(withDefaults())
+    );
+[VULN-002] Uniform 403 Response Behavior
+
+Severity: Low
+Category: Information Exposure (Indirect)
+
+Description
+
+All fuzzed endpoints return 403 Forbidden, regardless of whether the route exists or not.
+
+Impact
+
+This behavior may:
+
+Increase difficulty in distinguishing valid vs invalid endpoints
+Still allow reconnaissance through response consistency patterns
+Provide indirect information about security architecture
+Recommendation
+
+Consider differentiating responses:
+
+Condition	Recommended Response
+Existing protected endpoint	401 / 403
+Non-existing endpoint	404
+Actions Taken
+HTTP security header gaps were identified and documented
+Spring Security configuration was reviewed for enhancement
+Fuzzing behavior was validated under controlled conditions
+Endpoint access control confirmed as active and effective
+Recommendation issued for stricter HTTP header enforcement
+Conclusion
+
+The application demonstrates a strong security foundation through effective use of Spring Security, successfully intercepting and blocking unauthorized requests during fuzzing attempts.
+
+However, the absence of standard HTTP security headers represents a configuration weakness that should be addressed to align with modern security best practices.
+
+Overall assessment:
+
+Strong backend access control
+Effective request filtering
+Incomplete browser-side hardening
+Controlled and predictable security behavior under enumeration
+Tools Used
+ffuf
+Spring Boot
+Spring Security
+Kali Linux
+IntelliJ IDEA logs analysis
