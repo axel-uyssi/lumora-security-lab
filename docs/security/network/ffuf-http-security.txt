@@ -1,1 +1,65 @@
+xml-rpc                 [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 27ms]
+xmlrpc_server           [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 25ms]
+xslt                    [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 23ms]
+xyz                     [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 22ms]
+xn                      [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 27ms]
+zope                    [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 4ms]
+yonetim                 [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 17ms]
+xmlrpc                  [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 32ms]
+yshop                   [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 16ms]
+zh_TW                   [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 12ms]
+zencart                 [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 15ms]
+youtube                 [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 18ms]
+yml                     [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 21ms]
+y                       [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 23ms]
+zero                    [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 15ms]
+zimbra                  [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 12ms]
+zh-cn                   [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 14ms]
+yui                     [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 18ms]
+yearly                  [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 22ms]
+xyzzy                   [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 24ms]
+yonetici                [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 22ms]
+z                       [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 18ms]
+zh_CN                   [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 15ms]
+zeus                    [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 16ms]
+XXX                     [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 29ms]
+yesterday               [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 25ms]
+zend                    [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 20ms]
+zboard                  [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 20ms]
+zip                     [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 14ms]
+yt                      [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 21ms]
+zoom                    [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 10ms]
+zh                      [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 18ms]
+zipfiles                [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 14ms]
+zorum                   [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 11ms]
+zh-tw                   [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 17ms]
+zone                    [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 12ms]
+zt                      [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 9ms]
+zap                     [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 22ms]
+zoeken                  [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 15ms]
+zips                    [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 15ms]
+zones                   [Status: 403, Size: 0, Words: 1, Lines: 1, Duration: 13ms]
+:: Progress: [4614/4614] :: Job [1/1] :: 1960 req/sec :: Duration: [0:00:03] :: Errors: 0 ::
 
+┌──(Kali㉿axelzin)-[~]
+└─$ ffuf -u http://192.168.1.156:8081/actuator/FUZZ \
+-w /usr/share/wordlists/dirb/common.txt
+
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/
+
+       v2.1.0-dev
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://192.168.1.156:8081/actuator/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/wordlists/dirb/common.txt
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
