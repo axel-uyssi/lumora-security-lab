@@ -10,27 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MODEL/HOTEL.JAVA — Entidade central do sistema Lumora Hotels
-//
-// Relacionamentos:
-//   @OneToMany rooms    → um hotel tem vários quartos
-//   @OneToMany reviews  → um hotel tem várias avaliações
-//   @ElementCollection  → amenidades (WiFi, Piscina...) em tabela separada
-//
-// fetch = LAZY → só carrega a lista quando você chamar hotel.getRooms()
-//                Evita carregar dados desnecessários em toda consulta
-// ─────────────────────────────────────────────────────────────────────────────
-
 @Entity
-@Table(
-        name = "hotels",
-        indexes = {
-                @Index(name = "idx_hotel_country", columnList = "country"),
-                @Index(name = "idx_hotel_region",  columnList = "region"),
-                @Index(name = "idx_hotel_price",   columnList = "price_per_night")
-        }
-)
+@Table(name = "hotels")
 @Getter
 @Setter
 @Builder
@@ -40,7 +21,6 @@ public class Hotel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(updatable = false, nullable = false)
     private UUID id;
 
     @NotBlank
@@ -52,6 +32,9 @@ public class Hotel {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "TEXT")
+    private String longDescription; // Descrição detalhada para página de detalhes
+
     @NotBlank
     @Size(max = 100)
     @Column(nullable = false)
@@ -62,7 +45,15 @@ public class Hotel {
     @Column(nullable = false)
     private String city;
 
-    // BigDecimal para valores monetários — nunca use double para dinheiro!
+    @Size(max = 100)
+    private String address; // Endereço completo
+
+    @Column(precision = 10, scale = 7)
+    private BigDecimal latitude; // Para mapas
+
+    @Column(precision = 10, scale = 7)
+    private BigDecimal longitude; // Para mapas
+
     @Column(name = "price_per_night", nullable = false, precision = 10, scale = 2)
     private BigDecimal pricePerNight;
 
@@ -74,8 +65,18 @@ public class Hotel {
     @Column(nullable = false, length = 30)
     private Region region;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    private Category category; // BOUTIQUE, RESORT, ECO_LODGE, VILLA, etc
+
     @Column(name = "cover_image_url", length = 500)
     private String coverImageUrl;
+
+    @ElementCollection
+    @CollectionTable(name = "hotel_gallery",
+            joinColumns = @JoinColumn(name = "hotel_id"))
+    @Column(name = "image_url", length = 500)
+    private List<String> galleryImages; // Galeria de imagens
 
     @Builder.Default
     @Column(name = "is_featured")
@@ -88,7 +89,47 @@ public class Hotel {
     @Column(name = "total_reviews")
     private Integer totalReviews = 0;
 
-    // ── Relacionamentos ──────────────────────────────────────────────────────
+    @Column(name = "total_rooms")
+    private Integer totalRooms;
+
+    @Column(name = "check_in_time")
+    private String checkInTime; // "15:00"
+
+    @Column(name = "check_out_time")
+    private String checkOutTime; // "12:00"
+
+    @Column(name = "minimum_stay_nights")
+    private Integer minimumStayNights;
+
+    @Column(name = "cancellation_policy", columnDefinition = "TEXT")
+    private String cancellationPolicy;
+
+    @Column(name = "best_season")
+    private String bestSeason; // "May - October"
+
+    @Column(name = "nearby_attractions", columnDefinition = "TEXT")
+    private String nearbyAttractions;
+
+    @Column(name = "languages_spoken")
+    private String languagesSpoken; // "English, Greek, French"
+
+    @Column(name = "dress_code")
+    private String dressCode; // "Smart Casual"
+
+    @Column(name = "sustainability_rating")
+    private Integer sustainabilityRating; // 1-5
+
+    @Builder.Default
+    @Column(name = "accepts_pets")
+    private boolean acceptsPets = false;
+
+    @Builder.Default
+    @Column(name = "child_friendly")
+    private boolean childFriendly = true;
+
+    @Builder.Default
+    @Column(name = "wheelchair_accessible")
+    private boolean wheelchairAccessible = false;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL,
             orphanRemoval = true, fetch = FetchType.LAZY)
@@ -98,12 +139,23 @@ public class Hotel {
             orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Review> reviews;
 
-    // Amenidades armazenadas em tabela separada (hotel_amenities)
     @ElementCollection
     @CollectionTable(name = "hotel_amenities",
             joinColumns = @JoinColumn(name = "hotel_id"))
     @Column(name = "amenity", length = 100)
     private Set<String> amenities;
+
+    @ElementCollection
+    @CollectionTable(name = "hotel_dining_options",
+            joinColumns = @JoinColumn(name = "hotel_id"))
+    @Column(name = "dining_option", length = 100)
+    private Set<String> diningOptions; // Restaurant, Bar, Room Service, etc
+
+    @ElementCollection
+    @CollectionTable(name = "hotel_activities",
+            joinColumns = @JoinColumn(name = "hotel_id"))
+    @Column(name = "activity", length = 100)
+    private Set<String> activities; // Yoga, Diving, Hiking, etc
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -111,9 +163,40 @@ public class Hotel {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // ── Regiões disponíveis ──────────────────────────────────────────────────
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
     public enum Region {
-        MEDITERRANEAN, ARCTIC_NORDIC, TROPICAL_ISLANDS,
-        MOUNTAIN_RETREATS, DESERT_SANCTUARIES, ASIA_PACIFIC, SOUTH_AMERICA
+        MEDITERRANEAN,
+        ARCTIC_NORDIC,
+        TROPICAL_ISLANDS,
+        MOUNTAIN_RETREATS,
+        DESERT_SANCTUARIES,
+        ASIA_PACIFIC,
+        SOUTH_AMERICA,
+        NORTH_AMERICA,
+        MIDDLE_EAST,
+        OCEANIA
+    }
+
+    public enum Category {
+        BOUTIQUE_HOTEL,
+        LUXURY_RESORT,
+        ECO_LODGE,
+        PRIVATE_VILLA,
+        OVERWATER_BUNGALOW,
+        MOUNTAIN_RETREAT,
+        DESERT_CAMP,
+        PALACE_HOTEL,
+        RYOKAN,
+        GLAMPING
     }
 }

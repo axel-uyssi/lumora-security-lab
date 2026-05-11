@@ -3,23 +3,19 @@ package com.lumora.dto;
 import com.lumora.model.Hotel;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// DTO/HOTELREQUEST.JAVA — Dados de entrada para criar ou atualizar um hotel
-//
-// Record do Java 16+: imutável, gera construtor/getters/equals automaticamente
-// @Valid no Controller ativa as validações abaixo antes de executar o método
-// ─────────────────────────────────────────────────────────────────────────────
 
 public record HotelRequest(
 
         @NotBlank(message = "Nome é obrigatório")
-        @Size(max = 200, message = "Nome deve ter no máximo 200 caracteres")
+        @Size(max = 200)
         String name,
 
         @NotBlank(message = "Descrição é obrigatória")
         String description,
+
+        String longDescription,
 
         @NotBlank(message = "País é obrigatório")
         @Size(max = 100)
@@ -29,22 +25,66 @@ public record HotelRequest(
         @Size(max = 100)
         String city,
 
-        @NotNull(message = "Estrelas é obrigatório")
-        @DecimalMin(value = "1.0", message = "Mínimo 1 estrela")
-        @DecimalMax(value = "5.0", message = "Máximo 5 estrelas")
+        String address,
+
+        @DecimalMin("-90.0") @DecimalMax("90.0")
+        BigDecimal latitude,
+
+        @DecimalMin("-180.0") @DecimalMax("180.0")
+        BigDecimal longitude,
+
+        @NotNull
+        @DecimalMin(value = "1.0")
+        @DecimalMax(value = "5.0")
         BigDecimal stars,
 
-        @NotNull(message = "Preço por noite é obrigatório")
-        @DecimalMin(value = "0.01", message = "Preço deve ser maior que zero")
+        @NotNull
+        @DecimalMin(value = "0.01")
         BigDecimal pricePerNight,
 
-        @NotNull(message = "Região é obrigatória")
+        @NotNull
         Hotel.Region region,
+
+        Hotel.Category category,
 
         String coverImageUrl,
 
+        List<String> galleryImages,
+
         boolean featured,
 
-        Set<String> amenities
+        Integer totalRooms,
+
+        String checkInTime,
+
+        String checkOutTime,
+
+        @Min(1)
+        Integer minimumStayNights,
+
+        String cancellationPolicy,
+
+        String bestSeason,
+
+        String nearbyAttractions,
+
+        String languagesSpoken,
+
+        String dressCode,
+
+        @Min(1) @Max(5)
+        Integer sustainabilityRating,
+
+        boolean acceptsPets,
+
+        boolean childFriendly,
+
+        boolean wheelchairAccessible,
+
+        Set<String> amenities,
+
+        Set<String> diningOptions,
+
+        Set<String> activities
 
 ) {}

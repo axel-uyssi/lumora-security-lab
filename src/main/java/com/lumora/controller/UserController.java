@@ -2,8 +2,8 @@ package com.lumora.controller;
 
 import com.lumora.dto.*;
 import com.lumora.model.User;
-import com.lumora.security.AuthResponse;
-import com.lumora.security.LoginRequest;
+import com.lumora.auth.AuthResponse;
+import com.lumora.auth.LoginRequest;
 import com.lumora.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;

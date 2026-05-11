@@ -1,11 +1,5 @@
 package com.lumora.controller;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CORREÇÃO: imports explícitos por classe ao invés de wildcard (dto.*)
-// O IntelliJ às vezes não resolve PagedResponse com import com.com.com.com.lumora.lumora.com.com.lumora.lumora.dto.*
-// A solução é importar cada classe individualmente.
-// ─────────────────────────────────────────────────────────────────────────────
-
 import com.lumora.dto.ApiResponse;
 import com.lumora.dto.PagedResponse;
 import com.lumora.dto.ReservationRequest;

@@ -1,16 +1,18 @@
-package com.lumora.security;
+package com.lumora.auth;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SECURITY/AUTHRESPONSE.JAVA — Resposta após login ou registro
-//
-// accessToken → JWT que o cliente deve enviar em toda requisição protegida
-//               Header: Authorization: Bearer <accessToken>
-// expiresInMs → quando o token expira (cliente usa para renovar)
-// role        → papel do usuário (GUEST, CURATOR, ADMIN)
+// SECURITY/LOGINREQUEST.JAVA — Dados de entrada para autenticação
 // ─────────────────────────────────────────────────────────────────────────────
 
-public record AuthResponse(
-        String accessToken,
-        long   expiresInMs,
-        String role
+public record LoginRequest(
+
+        @NotBlank(message = "Email é obrigatório")
+        @Email(message = "Formato de email inválido")
+        String email,
+
+        @NotBlank(message = "Senha é obrigatória")
+        String password
 ) {}
