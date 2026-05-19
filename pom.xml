@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         xsi:schemaLocation="
+         http://maven.apache.org/POM/4.0.0
          https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!--
-    PARENT: spring-boot-starter-parent
-    Define versões compatíveis de TODAS as dependências Spring.
-    Herdar do parent evita conflitos de versão (dependency hell).
-    -->
+    <!-- SPRING BOOT PARENT -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -18,99 +16,98 @@
         <relativePath/>
     </parent>
 
+    <!-- PROJECT INFO -->
     <groupId>com.lumora</groupId>
     <artifactId>lumora-backend</artifactId>
     <version>1.0.0</version>
-    <name>Lumora Hotels Backend</name>
-    <description>API REST do sistema de reservas Lumora Hotels</description>
 
+    <name>lumora-backend</name>
+    <description>API REST Lumora Hotels</description>
+
+    <!-- PROPERTIES -->
     <properties>
         <java.version>21</java.version>
+
         <jjwt.version>0.12.6</jjwt.version>
+
+        <lombok.version>1.18.34</lombok.version>
+
+        <springdoc.version>2.6.0</springdoc.version>
     </properties>
 
     <dependencies>
 
-        <!-- ══════════════════════════════════════════════════════════
-             SPRING BOOT STARTERS
-             Cada starter inclui várias dependências relacionadas.
-        ══════════════════════════════════════════════════════════════ -->
-
-        <!-- Web: Spring MVC + Tomcat embutido + Jackson (JSON) -->
+        <!-- WEB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Validation: @Valid, @NotBlank, @Email, @Size, @Pattern... -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-
-        <!-- Security: autenticação, autorização, filtros -->
+        <!-- SECURITY -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- JPA: Hibernate + Spring Data → repositórios automáticos -->
+        <!-- VALIDATION -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- Actuator: /actuator/health, /actuator/metrics -->
+        <!-- ACTUATOR -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- ══════════════════════════════════════════════════════════
-             BANCO DE DADOS
-        ══════════════════════════════════════════════════════════════ -->
-
-        <!-- Driver PostgreSQL (runtime: só precisa na execução) -->
+        <!-- POSTGRESQL -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Flyway: migrações de schema versionadas (V1__, V2__...) -->
+        <!-- FLYWAY -->
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-database-postgresql</artifactId>
         </dependency>
 
-        <!-- H2: banco em memória para testes (scope test) -->
+
+        <!-- H2 -->
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
-        <!-- ══════════════════════════════════════════════════════════
-             JWT — jjwt 0.12 (API fluente, suporte completo a Java 21)
-             Dividido em 3 artefatos:
-               api     → compile (você usa no código)
-               impl    → runtime (implementação interna)
-               jackson → runtime (serialização JSON do payload)
-        ══════════════════════════════════════════════════════════════ -->
+        <!-- JWT -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
             <version>${jjwt.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
             <version>${jjwt.version}</version>
             <scope>runtime</scope>
         </dependency>
+
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
@@ -118,39 +115,30 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- ══════════════════════════════════════════════════════════
-             LOMBOK — elimina boilerplate
-             @Getter, @Setter, @Builder, @RequiredArgsConstructor, @Slf4j
-             optional=true → não vai para o JAR final
-        ══════════════════════════════════════════════════════════════ -->
+        <!-- LOMBOK -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
 
-        <!-- ══════════════════════════════════════════════════════════
-             SWAGGER / OPENAPI 3
-             Gera documentação interativa em /swagger-ui.html
-        ══════════════════════════════════════════════════════════════ -->
+        <!-- SWAGGER / OPENAPI -->
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.6.0</version>
+            <artifactId>
+                springdoc-openapi-starter-webmvc-ui
+            </artifactId>
+            <version>${springdoc.version}</version>
         </dependency>
 
-        <!-- ══════════════════════════════════════════════════════════
-             TESTES
-        ══════════════════════════════════════════════════════════════ -->
-
-        <!-- JUnit 5 + Mockito + AssertJ + MockMvc -->
+        <!-- TEST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- Testes de segurança: @WithMockUser, mockMvc com auth -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
@@ -160,36 +148,48 @@
     </dependencies>
 
     <build>
+
         <plugins>
-            <!-- Gera o JAR executável final ("fat jar") -->
+
+            <!-- SPRING BOOT -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <!-- Exclui Lombok do JAR — só precisa na compilação -->
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
+                <artifactId>
+                    spring-boot-maven-plugin
+                </artifactId>
             </plugin>
 
-            <!-- Configura Lombok como annotation processor -->
+            <!-- JAVA COMPILER -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <artifactId>
+                    maven-compiler-plugin
+                </artifactId>
+
+                <version>3.13.0</version>
+
                 <configuration>
+
+                    <release>${java.version}</release>
+
                     <annotationProcessorPaths>
+
                         <path>
                             <groupId>org.projectlombok</groupId>
+
                             <artifactId>lombok</artifactId>
+
+                            <version>${lombok.version}</version>
                         </path>
+
                     </annotationProcessorPaths>
+
                 </configuration>
+
             </plugin>
+
         </plugins>
+
     </build>
 
 </project>

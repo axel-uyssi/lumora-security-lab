@@ -115,11 +115,8 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // AUTH
-                        // IMPORTANTE:
-                        // NÃO colocar /api aqui
-                        // porque context-path já adiciona automaticamente
                         .requestMatchers(
-                                "/v1/auth/**"
+                                "/api/v1/users/**"
                         ).permitAll()
 
                         // H2
@@ -134,7 +131,7 @@ public class SecurityConfig {
                                 "/swagger-ui.html"
                         ).permitAll()
 
-                        // QUALQUER OUTRA ROTA
+                        // RESTANTE
                         .anyRequest().authenticated()
                 )
 
