@@ -1,4 +1,5 @@
 Authentication Brute Force Validation — 2026-05-18
+
 Objective
 Validate the defensive behavior of the Lumora Hotels API authentication pipeline against automated brute force attempts using a controlled offensive simulation framework.
 
