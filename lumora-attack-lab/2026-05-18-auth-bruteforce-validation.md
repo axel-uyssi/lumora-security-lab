@@ -75,6 +75,7 @@ lumora-attack-lab/
 │   ├── logger.py
 │   ├── metrics.py
 │   └── report.py
+
 Observed Result
 API Response
 HTTP 403 FORBIDDEN
@@ -147,6 +148,7 @@ repeated authentication failures
 IP abuse patterns
 credential stuffing behavior
 abnormal login frequency
+
 5. MFA Enforcement
 
 Even if credentials are compromised,
@@ -166,6 +168,7 @@ authentication throttling
 lockout mechanism testing
 JWT abuse simulation
 concurrent attack analysis
+
 Conclusion
 
 The Lumora Hotels API demonstrated correct defensive behavior by rejecting
