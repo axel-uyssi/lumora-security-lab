@@ -2,7 +2,7 @@
 
 A production-grade hotel reservation system API built with Spring Boot 3.3, designed as a **controlled penetration testing environment** for systematic security validation and defensive mechanism evaluation.
 
-## 📋 Overview
+##  Overview
 
 This project demonstrates **enterprise-level REST API architecture** while simultaneously serving as a **closed-loop security testing platform**. Every architectural decision is informed by industry best practices, and every defensive mechanism is validated against realistic attack scenarios.
 
@@ -10,7 +10,7 @@ This project demonstrates **enterprise-level REST API architecture** while simul
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌────────────────────┐
@@ -66,7 +66,7 @@ This project demonstrates **enterprise-level REST API architecture** while simul
 
 ---
 
-## ✨ Core Features
+##  Core Features
 
 ### 1. Authentication & Authorization
 
@@ -129,7 +129,7 @@ This project demonstrates **enterprise-level REST API architecture** while simul
 
 ---
 
-## 🔐 Security Posture
+##  Security Posture
 
 ### Defensive Mechanisms Implemented
 
@@ -635,7 +635,7 @@ Avoids expensive `AVG()` and `COUNT()` queries on every page load. Updated atomi
 
 ---
 
-## 🧪 Testing & Validation
+##  Testing & Validation
 
 ### Unit Tests (Planned)
 
@@ -662,7 +662,7 @@ See [Testing Methodology](#-testing-methodology) above.
 
 ---
 
-## 📊 Metrics & KPIs
+##  Metrics & KPIs
 
 | Metric | Value | Target |
 |--------|-------|--------|
@@ -675,7 +675,7 @@ See [Testing Methodology](#-testing-methodology) above.
 
 ---
 
-## 🛣️ Roadmap
+##  Roadmap
 
 ### Phase 3 (Current) — JWT & Authorization Testing
 - [ ] Complete JWT tampering tests
@@ -703,7 +703,7 @@ See [Testing Methodology](#-testing-methodology) above.
 
 ---
 
-## 📝 Configuration
+##  Configuration
 
 ### Environment Variables
 
@@ -730,7 +730,7 @@ cors.allowed-origins=http://localhost:3000,http://localhost:5173
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 We welcome contributions! Areas of interest:
 
@@ -748,7 +748,7 @@ We welcome contributions! Areas of interest:
 
 ---
 
-## ⚖️ License
+##  License
 
 MIT License — See LICENSE file for details
 
@@ -768,7 +768,7 @@ Software Engineer | Backend Specialist | Security Researcher
 
 ---
 
-## 📚 References & Learning Resources
+## References & Learning Resources
 
 ### Documentation
 - [Spring Boot Official Docs](https://spring.io/projects/spring-boot)
@@ -790,7 +790,7 @@ Software Engineer | Backend Specialist | Security Researcher
 
 ---
 
-## ❓ FAQ
+##  FAQ
 
 **Q: Is this a production-ready system?**  
 A: The codebase follows production-grade patterns, but it's designed for learning. For production, add rate limiting, 2FA, audit logging, and a proper deployment pipeline.
@@ -812,7 +812,7 @@ A: The system prevents double-booking via a conflict check: `reservationReposito
 
 ---
 
-## 🎓 Learning Outcomes
+##  Learning Outcomes
 
 By studying this codebase, you'll understand:
 
@@ -830,7 +830,7 @@ By studying this codebase, you'll understand:
 
 ---
 
-## 📞 Support
+##  Support
 
 **Issues & Questions:**  
 Open an issue on GitHub with:
