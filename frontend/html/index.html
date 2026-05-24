@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumora Hotels — The World's Most Beautiful Places</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --white:#ffffff;
+  --black:#0a0a0a;
+  --gray-100:#f5f5f3;
+  --gray-200:#e8e8e4;
+  --gray-400:#9a9a94;
+  --gray-700:#3a3a38;
+  --accent:#c9a96e;
+  --accent-light:#f0e6d3;
+  --accent-dark:#a8844a;
+  --success:#2d7a4f;
+  --error:#c4313a;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Georgia',serif;background:var(--black);color:var(--white);overflow-x:hidden}
+
+/* ══════════════════════════════════════════════
+   PAGE SYSTEM
+══════════════════════════════════════════════ */
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+
+/* ══════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:28px 56px;transition:background 0.3s,backdrop-filter 0.3s;
+}
+nav.scrolled{
+  background:rgba(10,10,10,0.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+nav::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);
+  pointer-events:none;opacity:1;transition:opacity 0.3s;
+}
+nav.scrolled::before{opacity:0}
+.logo{
+  font-size:22px;font-weight:400;letter-spacing:0.18em;
+  color:var(--white);text-transform:uppercase;position:relative;z-index:1;
+  cursor:pointer;border:none;background:transparent;
+}
+.logo span{color:var(--accent)}
+nav ul{display:flex;gap:40px;list-style:none;position:relative;z-index:1}
+nav ul button{
+  background:transparent;border:none;cursor:pointer;
+  font-family:'Helvetica Neue',sans-serif;font-size:12px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.75);transition:color 0.3s;
+  position:relative;
+}
+nav ul button:hover,nav ul button.active{color:var(--accent)}
+nav ul button.active::after{
+  content:'';position:absolute;bottom:-8px;left:0;right:0;
+  height:2px;background:var(--accent);
+}
+.nav-actions{display:flex;align-items:center;gap:20px;position:relative;z-index:1}
+.nav-icon-btn{
+  background:transparent;border:none;cursor:pointer;
+  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,0.6);transition:color 0.3s;position:relative;
+}
+.nav-icon-btn:hover{color:var(--accent)}
+.nav-icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5}
+.nav-badge{
+  position:absolute;top:-4px;right:-4px;
+  background:var(--accent);color:var(--black);
+  font-size:9px;font-weight:600;
+  width:16px;height:16px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Helvetica Neue',sans-serif;
+}
+.nav-cta{
+  font-family:'Helvetica Neue',sans-serif;font-size:11px;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--white);border:1px solid rgba(255,255,255,0.4);
+  padding:10px 24px;cursor:pointer;background:transparent;
+  transition:all 0.3s;
+}
+.nav-cta:hover{background:var(--accent);border-color:var(--accent)}
+.user-menu{
+  position:relative;
+}
+.user-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--accent);color:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Helvetica Neue',sans-serif;font-size:14px;
+  font-weight:600;cursor:pointer;border:2px solid transparent;
+  transition:border-color 0.3s;
+}
+.user-avatar:hover{border-color:var(--accent)}
+.user-dropdown{
+  position:absolute;top:calc(100% + 16px);right:0;
+  width:260px;background:rgba(10,10,10,0.98);
+  border:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(20px);
+  padding:12px 0;display:none;
+}
+.user-dropdown.active{display:block}
+.user-dropdown-header{
+  padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.user-dropdown-name{
+  font-family:'Helvetica Neue',sans-serif;font-size:14px;
+  color:var(--white);margin-bottom:4px;
+}
+.user-dropdown-email{
+  font-family:'Helvetica Neue',sans-serif;font-size:11px;
+  color:rgba(255,255,255,0.35);
+}
+.user-dropdown-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 20px;cursor:pointer;
+  font-family:'Helvetica Neue',sans-serif;font-size:12px;
+  color:rgba(255,255,255,0.65);transition:all 0.2s;
+  background:transparent;border:none;width:100%;text-align:left;
+}
+.user-dropdown-item:hover{background:rgba(255,255,255,0.04);color:var(--white)}
+.user-dropdown-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
+.user-dropdown-divider{height:1px;background:rgba(255,255,255,0.06);margin:8px 0}
+
+/* ══════════════════════════════════════════════
+   SHARED COMPONENTS
+══════════════════════════════════════════════ */
+.section-label{
+  font-family:'Helvetica Neue',sans-serif;font-size:11px;
+  letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);
+  margin-bottom:16px;display:flex;align-items:center;gap:12px;
+}
+.section-label::before{content:'';display:block;width:24px;height:1px;background:var(--accent)}
+.btn-gold{
+  font-family:'Helvetica Neue',sans-serif;font-size:12px;
+  letter-spacing:0.16em;text-transform:uppercase;color:var(--black);
+  background:var(--accent);border:none;padding:16px 40px;
+  cursor:pointer;transition:opacity 0.3s;
+}
+.btn-gold:hover{opacity:0.85}
+.btn-outline{
+  font-family:'Helvetica Neue',sans-serif;font-size:12px;
+  letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);
+  background:transparent;border:1px solid rgba(255,255,255,0.3);
+  padding:16px 40px;cursor:pointer;transition:all 0.3s;
+}
+.btn-outline:hover{color:var(--white);border-color:rgba(255,255,255,0.6)}
+.btn-ghost{
+  font-family:'Helvetica Neue',sans-serif;font-size:12px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.5);background:transparent;
+  border:none;cursor:pointer;display:flex;align-items:center;
+  gap:10px;transition:color 0.3s;
+}
+.btn-ghost:hover{color:var(--white)}
+.btn-ghost::after{content:'→';font-size:16px}
+
+/* ══════════════════════════════════════════════
+   HOTEL CARDS
+══════════════════════════════════════════════ */
+.hcard{position:relative;overflow:hidden;cursor:pointer;background:#111}
+.hcard img{width:100%;object-fit:cover;display:block;transition:transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94)}
+.hcard:hover img{transform:scale(1.06)}
+.hcard-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.15) 55%,transparent 100%);
+  transition:background 0.4s;
+}
+.hcard:hover .hcard-overlay{
+  background:linear-gradient(to top,rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.3) 60%,transparent 100%);
+}
+.hcard-badge{
+  position:absolute;top:24px;left:24px;
+  font-family:'Helvetica Neue',sans-serif;font-size:10px;
+  letter-spacing:0.18em;text-transform:uppercase;
+  background:var(--accent);color:var(--black);padding:5px 12px;
+}
+.hcard-info{position:absolute;bottom:0;left:0;right:0;padding:28px 28px 24px}
+.hcard-loc{
+  font-family:'Helvetica Neue',sans-serif;font-size:11px;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px;
+}
+.hcard-name{font-size:22px;font-weight:400;line-height:1.2;margin-bottom:10px;color:var(--white)}
+.hcard-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);
+}
+.hcard-price{font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.55)}
+.hcard-price strong{font-family:'Georgia',serif;font-size:17px;font-weight:400;color:var(--white)}
+.hcard-arrow{
+  width:34px;height:34px;border:1px solid rgba(255,255,255,0.2);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,0.5);font-size:15px;transition:all 0.3s;
+}
+.hcard:hover .hcard-arrow{background:var(--accent);border-color:var(--accent);color:var(--black)}
+.hcard-wishlist{
+  position:absolute;top:20px;right:20px;z-index:10;
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(10,10,10,0.6);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.3s;
+}
+.hcard-wishlist:hover{background:rgba(10,10,10,0.85);border-color:var(--accent)}
+.hcard-wishlist svg{width:18px;height:18px;stroke:var(--white);fill:none;stroke-width:1.5}
+.hcard-wishlist.active svg{fill:var(--accent);stroke:var(--accent)}
+.star{
+  width:10px;height:10px;background:var(--accent);display:inline-block;
+  clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+}
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+footer{
+  background:#050505;border-top:1px solid rgba(255,255,255,0.06);
+  padding:64px 56px 40px;
+}
+.footer-top{
+  display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;
+  gap:60px;margin-bottom:60px;
+}
+.footer-logo{
+  font-size:20px;font-weight:400;letter-spacing:0.18em;
+  color:var(--white);text-transform:uppercase;font-family:'Georgia',serif;
+  margin-bottom:16px;display:block;cursor:pointer;border:none;background:transparent;
+}
+.footer-logo span{color:var(--accent)}
+.footer-brand p{
+  font-family:'Helvetica Neue',sans-serif;font-size:13px;
+  color:rgba(255,255,255,0.35);line-height:1.8;max-width:240px;
+}
+.footer-col h4{
+  font-family:'Helvetica Neue',sans-serif;font-size:11px;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);margin-bottom:20px;
+}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.footer-col ul button{
+  font-family:'Helvetica Neue',sans-serif;font-size:13px;
+  color:rgba(255,255,255,0.55);background:transparent;border:none;
+  cursor:pointer;transition:color 0.3s;text-align:left;
+}
+.footer-col ul button:hover{color:var(--accent)}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,0.06);padding-top:28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.footer-copy{font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.2)}
+.footer-langs{display:flex;gap:20px}
+.footer-langs button{
+  font-family:'Helvetica Neue',sans-serif;font-size:11px;
+  letter-spacing:0.1em;color:rgba(255,255,255,0.25);
+  background:transparent;border:none;cursor:pointer;
+  text-transform:uppercase;transition:color 0.3s;
+}
+.footer-langs button:hover,.footer-langs button.active{color:var(--accent)}
+
+/* ══════════════════════════════════════════════
+   PAGE: HOME
+══════════════════════════════════════════════ */
+.hero{
+  height:100vh;position:relative;display:flex;align-items:flex-end;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&q=90');
+  background-size:cover;background-position:center;
+  animation:slowZoom 18s ease-in-out infinite alternate;
+}
+@keyframes slowZoom{from{transform:scale(1.04)}to{transform:scale(1.00)}}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0.25) 50%,rgba(0,0,0,0.1) 100%);
+}
+.hero-content{position:relative;z-index:2;padding:0 56px 80px;max-width:760px}
+.hero-tag{
+  font-family:'Helvetica Neue',sans-serif;font-size:11px;
+  letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);
+  margin-bottom:20px;display:flex;align-items:center;gap:14px;
+}
+.hero-tag::before{content:'';display:block;width:32px;height:1px;background:var(--accent)}
+.hero h1{
+  font-size:clamp(40px,6vw,80px);font-weight:400;line-height:1.08;
+  letter-spacing:-0.02em;margin-bottom:24px;color:var(--white);
+}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero-sub{
+  font-family:'Helvetica Neue',sans-serif;font-size:14px;
+  color:rgba(255,255,255,0.6);letter-spacing:0.04em;line-height:1.7;
+  max-width:440px;margin-bottom:40px;
+}
+.hero-cta{display:flex;gap:20px;align-items:center}
+.scroll-hint{
+  position:absolute;right:56px;bottom:80px;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  font-family:'Helvetica Neue',sans-serif;font-size:10px;
+  letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);
+}
+.scroll-line{
+  width:1px;height:48px;background:rgba(255,255,255,0.25);
+  position:relative;overflow:hidden;
+}
+.scroll-line::after{
+  content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;
+  background:var(--accent);animation:scrollDrop 2s ease-in-out infinite;
+}
+@keyframes scrollDrop{from{top:-100%}to{top:200%}}
+
+/* MARQUEE */
+.marquee-strip{background:var(--accent);overflow:hidden;padding:14px 0}
+.marquee-inner{
+  display:flex;gap:64px;animation:marquee 28s linear infinite;
+  white-space:nowrap;width:max-content;
+}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{
+  font-family:'Helvetica Neue',sans-serif;font-size:11px;
+  letter-spacing:0.22em;text-transform:uppercase;color:var(--black);
+  display:flex;align-items:center;gap:20px;
+}
+.mdot{width:4px;height:4px;border-radius:50%;background:rgba(0,0,0,0.35)}
+
+/* HOME SECTIONS */
+.home-section{padding:120px 56px}
+.home-section-header{
+  display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:64px;
+}
+.section-title{
+  font-size:clamp(28px,3.5vw,48px);font-weight:400;line-height:1.15;
+  letter-spacing:-0.01em;color:var(--white);
+}
+.section-title em{font-style:italic;color:var(--accent)}
+.view-all-btn{
+  font-family:'Helvetica Neue',sans-serif;font-size:12px;
+  letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);
+  background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.15);
+  padding-bottom:6px;cursor:pointer;transition:color 0.3s;
+}
+.view-all-btn:hover{color:var(--accent)}
+.grid-featured{
+  display:grid;grid-template-columns:1.55fr 1fr;
+  grid-template-rows:auto auto;gap:16px;
+}
+.grid-featured .hcard:first-child{grid-row:1/3}
+.grid-featured .hcard:first-child img{height:680px}
+.grid-featured .hcard:not(:first-child) img{height:330px}
+.grid-featured .hcard:first-child .hcard-name{font-size:32px}
+.grid-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.grid-row .hcard img{height:420px}
+
+/* PHILOSOPHY */
+.philosophy{
+  padding:120px 56px;display:grid;grid-template-columns:1fr 1fr;
+  gap:100px;align-items:center;border-top:1px solid rgba(255,255,255,0.06);
+}
+.philosophy h2{
+  font-size:clamp(28px,3vw,42px);font-weight:400;line-height:1.2;
+  margin-bottom:28px;color:var(--white);
+}
+.philosophy h2 em{font-style:italic;color:var(--accent)}
+.philosophy p{
+  font-family:'Helvetica Neue',sans-serif;font-size:15px;
+  color:rgba(255,255,255,0.5);line-height:1.85;margin-bottom:20px;
+}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.stat-item{border-top:1px solid rgba(255,255,255,0.1);padding-top:24px}
+.stat-num{font-size:44px;font-weight:400;color:var(--white);line-height:1;margin-bottom:8px}
+.stat-num span{color:var(--accent);font-style:italic}
+.stat-label{
+  font-family:'Helvetica Neue',sans-serif;font-size:12px;letter-spacing:0.1em;
+  color:rgba(255,255,255,0.4);text-transform:uppercase;
+}
+
+/* EXPERIENCE STRIP */
+.exp-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid rgba(255,255,255,0.06);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.exp-item{
+  padding:56px 40px;border-right:1px solid rgba(255,255,255,0.06);
+  transition:background 0.3s;
+}
+.exp-item:last-child{border-right:none}
+.exp-item:hover{background:rgba(255,255,255,0.02)}
+.exp-icon{width:40px;height:40px;margin-bottom:24px;opacity:0.6}
+.exp-title{font-size:18px;font-weight:400;margin-bottom:12px;color:var(--white)}
+.exp-desc{
+  font-family:'Helvetica Neue',sans-serif;font-size:13px;
+  color:rgba(255,255,255,0.4);line-height:1.75;
+}
+
+/* TESTIMONIAL */
+.testimonial-section{
+  padding:120px 56px;text-align:center;max-width:860px;margin:0 auto;
+}
+.quote-mark{
+  font-size:80px;color:var(--accent);opacity:0.3;line-height:1;
+  margin-bottom:-20px;font-family:'Georgia',serif;
+}
+.testimonial-text{
+  font-size:clamp(20px,2.5vw,30px);font-weight:400;line-height:1.55;
+  color:rgba(255,255,255,0.85);margin-bottom:36px;
+}
+.testimonial-author{
+  font-family:'Helvetica Neue',sans-serif;font-size:12px;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);
+}
+
+/* CTA BANNER */
+.cta-banner{
+  margin:0 56px 120px;position:relative;overflow:hidden;min-height:420px;
+  display:flex;align-items:center;
+}
+.cta-bg{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1439130490301-25e322d88054?w=1600&q=85');
+  background-size:cover;background-position:center 40%;
+}
+.cta-ov{position:absolute;inset:0;background:rgba(0,0,0,0.55)}
+.cta-content{position:relative;z-index:2;padding:80px;max-width:600px}
+.cta-content h2{
+  font-size:clamp(28px,3.5vw,48px);font-weight:400;line-height:1.15;
+  margin-bottom:24px;color:var(--white);
+}
+.cta-content h2 em{font-style:italic;color:var(--accent)}
+.cta-content p{
+  font-family:'Helvetica Neue',sans-serif;font-size:15px;
+  color:rgba(255,255,255,0.6);margin-bottom:40px;line-height:1.7;
+}
+
+/* ══════════════════════════════════════════════
+   PAGE: USER DASHBOARD
+══════════════════════════════════════════════ */
+.dashboard{padding:120px 56px 80px;min-height:100vh}
+.dashboard-header{
+  margin-bottom:64px;padding-bottom:40px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.dashboard-header h1{
+  font-size:clamp(32px,4vw,56px);font-weight:400;line-height:1.1;
+  color:var(--white);margin-bottom:12px;
+}
+.dashboard-header h1 em{font-style:italic;color:var(--accent)}
+.dashboard-header p{
+  font-family:'Helvetica Neue',sans-serif;font-size:14px;
+  color:rgba(255,255,255,0.4);
+}
+.dashboard-tabs{
+  display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,0.08);
+  margin-bottom:56px;overflow-x:auto;
+}
+.dashboard-tab{
+  font-family:'Helvetica Neue',sans-serif;font-size:12px;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);padding:20px 32px;
+  background:transparent;border:none;border-bottom:2px solid transparent;
+  cursor:pointer;transition:all 0.3s;white-space:nowrap;
+}
+.dashboard-tab.active{color:var(--white);border-bottom-color:var(--accent)}
+.dashboard-tab:hover{color:rgba(255,255,255,0.65)}
+.dashboard-content{display:none}
+.dashboard-content.active{display:block}
+
+/* RESERVATION CARDS */
+.reservations-grid{display:grid;gap:20px}
+.reservation-card{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  padding:32px;display:grid;grid-template-columns:200px 1fr auto;
+  gap:32px;align-items:center;transition:background 0.3s;
+}
+.reservation-card:hover{background:rgba(255,255,255,0.04)}
+.reservation-img{
+  width:200px;height:140px;object-fit:cover;
+}
+.reservation-info h3{
+  font-size:20px;font-weight:400;color:var(--white);
+  margin-bottom:8px;line-height:1.2;
+}
+.reservation-meta{
+  display:flex;flex-direction:column;gap:8px;
+  font-family:'Helvetica Neue',sans-serif;font-size:13px;
+  color:rgba(255,255,255,0.45);
+}
+.reservation-status{
+  display:inline-block;padding:6px 12px;
+  font-size:10px;letter-spacing:0.14em;text-transform:uppercase;
+  border-radius:2px;margin-top:8px;
+}
+.reservation-status.confirmed{background:rgba(45,122,79,0.15);color:#5bc47f;border:1px solid rgba(45,122,79,0.3)}
+.reservation-status.pending{background:rgba(201,169,110,0.15);color:var(--accent);border:1px solid rgba(201,169,110,0.3)}
+.reservation-status.cancelled{background:rgba(196,49,58,0.15);color:#e86771;border:1px solid rgba(196,49,58,0.3)}
+.reservation-actions{display:flex;flex-direction:column;gap:10px}
+.reservation-actions button{
+  font-family:'Helvetica Neue',sans-serif;font-size:11px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  padding:10px 20px;cursor:pointer;transition:all 0.3s;
+  white-space:nowrap;
+}
+
+/* WISHLIST */
+.wishlist-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.wishlist-empty{
+  text-align:center;padding:80px 20px;
+  border:1px dashed rgba(255,255,255,0.1);
+}
+.wishlist-empty-icon{
+  width:80px;height:80px;margin:0 auto 24px;
+  opacity:0.15;
+}
+.wishlist-empty h3{
+  font-size:24px;font-weight:400;color:rgba(255,255,255,0.5);
+  margin-bottom:12px;
+}
+.wishlist-empty p{
+  font-family:'Helvetica Neue',sans-serif;font-size:14px;
+  color:rgba(255,255,255,0.3);margin-bottom:32px;
+}
+
+/* PROFILE */
+.profile-grid{
+  display:grid;grid-template-columns:320px 1fr;gap:40px;
+}
+.profile-sidebar{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  padding:32px;
+}
+.profile-avatar-large{
+  width:120px;height:120px;border-radius:50%;
+  background:var(--accent);color:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;font-weight:600;margin:0 auto 24px;
+  font-family:'Helvetica Neue',sans-serif;
+}
+.profile-name{
+  font-size:22px;font-weight:400;text-align:center;
+  color:var(--white);margin-bottom:6px;
+}
+.profile-email{
+  font-family:'Helvetica Neue',sans-serif;font-size:12px;
+  color:rgba(255,255,255,0.35);text-align:center;margin-bottom:24px;
+}
+.profile-stats{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);
+}
+.profile-stat{text-align:center}
+.profile-stat-num{
+  font-size:28px;font-weight:400;color:var(--white);
+  margin-bottom:4px;
+}
+.profile-stat-label{
+  font-family:'Helvetica Neue',sans-serif;font-size:10px;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
+}
+.profile-form{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  padding:40px;
+}
+.form-group{margin-bottom:24px}
+.form-label{
+  display:block;font-family:'Helvetica Neue',sans-serif;
+  font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);margin-bottom:10px;
+}
+.form-input{
+  width:100%;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);color:var(--white);
+  font-family:'Helvetica Neue',sans-serif;font-size:14px;
+  padding:14px 16px;outline:none;transition:all 0.3s;
+}
+.form-input:focus{
+  border-color:var(--accent);
+  background:rgba(201,169,110,0.04);
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+/* ══════════════════════════════════════════════
+   PAGE: JOURNAL
+══════════════════════════════════════════════ */
+.journal-hero{
+  height:70vh;min-height:500px;position:relative;
+  display:flex;align-items:flex-end;overflow:hidden;
+}
+.journal-hero-bg{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1800&q=90');
+  background-size:cover;background-position:center;
+  animation:slowZoom 20s ease-in-out infinite alternate;
+}
+.journal-hero-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.25) 55%,rgba(0,0,0,0.1) 100%);
+}
+.journal-hero-content{
+  position:relative;z-index:2;padding:0 56px 64px;max-width:700px;
+}
+.journal-hero-content h1{
+  font-size:clamp(36px,5vw,64px);font-weight:400;line-height:1.08;
+  letter-spacing:-0.02em;color:var(--white);margin-top:14px;margin-bottom:20px;
+}
+.journal-hero-content h1 em{font-style:italic;color:var(--accent)}
+.journal-hero-content p{
+  font-family:'Helvetica Neue',sans-serif;font-size:14px;
+  color:rgba(255,255,255,0.5);line-height:1.75;max-width:480px;
+}
+.journal-section{padding:100px 56px}
+.journal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.journal-card{cursor:pointer;transition:transform 0.3s}
+.journal-card:hover{transform:translateY(-4px)}
+.journal-card-img{
+  width:100%;height:280px;object-fit:cover;margin-bottom:20px;
+}
+.journal-card-cat{
+  font-family:'Helvetica Neue',sans-serif;font-size:10px;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:12px;
+}
+.journal-card-title{
+  font-size:22px;font-weight:400;line-height:1.3;
+  color:var(--white);margin-bottom:12px;
+}
+.journal-card-excerpt{
+  font-family:'Helvetica Neue',sans-serif;font-size:14px;
+  color:rgba(255,255,255,0.4);line-height:1.7;margin-bottom:16px;
+}
+.journal-card-meta{
+  display:flex;align-items:center;gap:12px;
+  font-family:'Helvetica Neue',sans-serif;font-size:11px;
+  color:rgba(255,255,255,0.25);
+}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media(max-width:1200px){
+  nav{padding:24px 32px}
+  .hero-content,.page-hero-content,.journal-hero-content{padding:0 32px 60px}
+  .home-section,.dashboard,.journal-section{padding:80px 32px}
+  .grid-featured{grid-template-columns:1fr}
+  .grid-featured .hcard:first-child{grid-row:auto}
+  .grid-row,.journal-grid,.wishlist-grid{grid-template-columns:repeat(2,1fr)}
+  .philosophy,.profile-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  nav ul{display:none}
+  .grid-row,.journal-grid,.wishlist-grid{grid-template-columns:1fr}
+  .reservation-card{grid-template-columns:1fr;gap:20px}
+  .reservation-img{width:100%;height:200px}
+  .dashboard-tabs{gap:0}
+  .dashboard-tab{padding:16px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════════ -->
+<nav id="main-nav">
+  <button class="logo" onclick="goto('home')">Lu<span>mo</span>ra</button>
+  <ul>
+    <li><button onclick="goto('destinations')">Destinations</button></li>
+    <li><button onclick="goto('experiences')">Experiences</button></li>
+    <li><button onclick="goto('collection')">Collection</button></li>
+    <li><button onclick="goto('journal')">Journal</button></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-icon-btn" onclick="goto('dashboard')" title="Wishlist">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span class="nav-badge">3</span>
+    </button>
+    <div class="user-menu">
+      <div class="user-avatar" onclick="toggleUserMenu()">JM</div>
+      <div class="user-dropdown" id="user-dropdown">
+        <div class="user-dropdown-header">
+          <div class="user-dropdown-name">Jean Moreau</div>
+          <div class="user-dropdown-email">jean@example.com</div>
+        </div>
+        <button class="user-dropdown-item" onclick="goto('dashboard')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </button>
+        <button class="user-dropdown-item" onclick="gotoDashboardTab('reservations')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          My Reservations
+        </button>
+        <button class="user-dropdown-item" onclick="gotoDashboardTab('wishlist')">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          Wishlist
+        </button>
+        <button class="user-dropdown-item" onclick="gotoDashboardTab('profile')">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a5 5 0 015-5h6a5 5 0 015 5v2"/></svg>
+          Profile Settings
+        </button>
+        <div class="user-dropdown-divider"></div>
+        <button class="user-dropdown-item" onclick="logout()">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-tag">Featured Destination — 2025</div>
+      <h1>Where the<br>world becomes <em>art</em></h1>
+      <p class="hero-sub">Curated sanctuaries in the most breathtaking places on earth. Architecture, nature, and silence — perfectly balanced.</p>
+      <div class="hero-cta">
+        <button class="btn-gold" onclick="goto('collection')">Explore Collection</button>
+        <button class="btn-ghost" onclick="goto('destinations')">View Destinations</button>
+      </div>
+    </div>
+    <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
+  </section>
+
+  <div class="marquee-strip">
+    <div class="marquee-inner">
+      <div class="marquee-item">Santorini, Greece<div class="mdot"></div></div>
+      <div class="marquee-item">Patagonia, Argentina<div class="mdot"></div></div>
+      <div class="marquee-item">Kyoto, Japan<div class="mdot"></div></div>
+      <div class="marquee-item">Lofoten, Norway<div class="mdot"></div></div>
+      <div class="marquee-item">Maldives<div class="mdot"></div></div>
+      <div class="marquee-item">Bali, Indonesia<div class="mdot"></div></div>
+      <div class="marquee-item">Tuscany, Italy<div class="mdot"></div></div>
+      <div class="marquee-item">Iceland<div class="mdot"></div></div>
+      <div class="marquee-item">Morocco<div class="mdot"></div></div>
+      <div class="marquee-item">New Zealand<div class="mdot"></div></div>
+      <div class="marquee-item">Santorini, Greece<div class="mdot"></div></div>
+      <div class="marquee-item">Patagonia, Argentina<div class="mdot"></div></div>
+      <div class="marquee-item">Kyoto, Japan<div class="mdot"></div></div>
+      <div class="marquee-item">Lofoten, Norway<div class="mdot"></div></div>
+      <div class="marquee-item">Maldives<div class="mdot"></div></div>
+      <div class="marquee-item">Bali, Indonesia<div class="mdot"></div></div>
+    </div>
+  </div>
+
+  <section class="home-section">
+    <div class="home-section-header">
+      <div>
+        <div class="section-label">Curated Properties</div>
+        <h2 class="section-title">Featured <em>Destinations</em></h2>
+      </div>
+      <button class="view-all-btn" onclick="goto('destinations')">View All 48 Properties →</button>
+    </div>
+    <div class="grid-featured">
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1570213489059-0aac6626cade?w=1200&q=85" alt="Santorini">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-badge">Editor's Choice</div>
+        <button class="hcard-wishlist" onclick="toggleWishlist(event,this)">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+        <div class="hcard-info">
+          <div class="hcard-loc">Oia, Santorini — Greece</div>
+          <div class="hcard-name">Caldera Villas<br>Infinity Resort</div>
+          <div class="hcard-meta">
+            <div>
+              <div class="hcard-price">From <strong>€ 1.840</strong> / night</div>
+              <div style="margin-top:6px"><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span></div>
+            </div>
+            <div class="hcard-arrow">→</div>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8?w=900&q=85" alt="Lofoten">
+        <div class="hcard-overlay"></div>
+        <button class="hcard-wishlist" onclick="toggleWishlist(event,this)">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+        <div class="hcard-info">
+          <div class="hcard-loc">Lofoten Islands — Norway</div>
+          <div class="hcard-name">Arctic Glass Lodge</div>
+          <div class="hcard-meta">
+            <div class="hcard-price">From <strong>€ 980</strong> / night</div>
+            <div class="hcard-arrow">→</div>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=900&q=85" alt="Maldives">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-badge">New</div>
+        <button class="hcard-wishlist active" onclick="toggleWishlist(event,this)">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+        <div class="hcard-info">
+          <div class="hcard-loc">North Malé Atoll — Maldives</div>
+          <div class="hcard-name">Overwater Pearl Villas</div>
+          <div class="hcard-meta">
+            <div class="hcard-price">From <strong>€ 2.100</strong> / night</div>
+            <div class="hcard-arrow">→</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=85" alt="Kyoto">
+        <div class="hcard-overlay"></div>
+        <button class="hcard-wishlist" onclick="toggleWishlist(event,this)">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+        <div class="hcard-info">
+          <div class="hcard-loc">Arashiyama — Kyoto, Japan</div>
+          <div class="hcard-name">Bamboo Forest Ryokan</div>
+          <div class="hcard-meta">
+            <div class="hcard-price">From <strong>€ 740</strong> / night</div>
+            <div class="hcard-arrow">→</div>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1502786129293-79981df4e689?w=800&q=85" alt="Tuscany">
+        <div class="hcard-overlay"></div>
+        <button class="hcard-wishlist active" onclick="toggleWishlist(event,this)">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+        <div class="hcard-info">
+          <div class="hcard-loc">Val d'Orcia — Tuscany, Italy</div>
+          <div class="hcard-name">Il Belvedere Estate</div>
+          <div class="hcard-meta">
+            <div class="hcard-price">From <strong>€ 1.200</strong> / night</div>
+            <div class="hcard-arrow">→</div>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=800&q=85" alt="Patagonia">
+        <div class="hcard-overlay"></div>
+        <button class="hcard-wishlist" onclick="toggleWishlist(event,this)">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+        <div class="hcard-info">
+          <div class="hcard-loc">Torres del Paine — Patagonia</div>
+          <div class="hcard-name">Wild Range Eco Lodge</div>
+          <div class="hcard-meta">
+            <div class="hcard-price">From <strong>€ 890</strong> / night</div>
+            <div class="hcard-arrow">→</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="philosophy">
+    <div>
+      <div class="section-label">Our Philosophy</div>
+      <h2>Beauty is not a luxury.<br>It is a <em>necessity</em>.</h2>
+      <p>We believe that extraordinary surroundings awaken something fundamental in the human experience. Each property in our collection exists in harmony with its landscape — never imposing, always revealing.</p>
+      <p>From the volcanic caldera cliffs of Greece to the silence of arctic fjords, we hand-select fewer than 50 properties worldwide, each meeting our most exacting standard.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-item"><div class="stat-num">48<span>+</span></div><div class="stat-label">Properties Worldwide</div></div>
+      <div class="stat-item"><div class="stat-num">31</div><div class="stat-label">Countries</div></div>
+      <div class="stat-item"><div class="stat-num">12<span>k</span></div><div class="stat-label">Guests Per Year</div></div>
+      <div class="stat-item"><div class="stat-num">9<span>.8</span></div><div class="stat-label">Average Rating</div></div>
+    </div>
+  </div>
+
+  <div class="exp-strip">
+    <div class="exp-item">
+      <svg class="exp-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="rgba(255,255,255,0.6)" stroke-width="1"/><path d="M20 10 L20 30 M10 20 L30 20" stroke="rgba(201,169,110,0.8)" stroke-width="1.5"/></svg>
+      <div class="exp-title">Curated Arrival</div>
+      <div class="exp-desc">Private transfers, champagne welcome, and a hand-written personal note from the property director.</div>
+    </div>
+    <div class="exp-item">
+      <svg class="exp-icon" viewBox="0 0 40 40" fill="none"><rect x="8" y="14" width="24" height="16" rx="2" stroke="rgba(255,255,255,0.6)" stroke-width="1"/><path d="M14 14 L14 10 Q14 8 16 8 L24 8 Q26 8 26 10 L26 14" stroke="rgba(201,169,110,0.8)" stroke-width="1.5"/></svg>
+      <div class="exp-title">Local Immersion</div>
+      <div class="exp-desc">Bespoke cultural programs — private market visits, chef tastings, and encounters with local artisans.</div>
+    </div>
+    <div class="exp-item">
+      <svg class="exp-icon" viewBox="0 0 40 40" fill="none"><path d="M20 6 L22 14 L30 14 L24 19 L26 27 L20 22 L14 27 L16 19 L10 14 L18 14 Z" stroke="rgba(255,255,255,0.6)" stroke-width="1" fill="none"/><circle cx="20" cy="17" r="3" stroke="rgba(201,169,110,0.8)" stroke-width="1.5"/></svg>
+      <div class="exp-title">The Quiet Hours</div>
+      <div class="exp-desc">No conferences, no events. Our properties are sanctuaries for thought, presence, and the art of doing nothing.</div>
+    </div>
+    <div class="exp-item">
+      <svg class="exp-icon" viewBox="0 0 40 40" fill="none"><path d="M8 32 Q14 16 20 20 Q26 24 32 8" stroke="rgba(201,169,110,0.8)" stroke-width="1.5" fill="none"/><circle cx="8" cy="32" r="2" fill="rgba(255,255,255,0.6)"/><circle cx="32" cy="8" r="2" fill="rgba(255,255,255,0.6)"/></svg>
+      <div class="exp-title">Seamless Planning</div>
+      <div class="exp-desc">Your dedicated travel curator handles every detail — from flight coordination to in-suite preferences.</div>
+    </div>
+  </div>
+
+  <div class="testimonial-section">
+    <div class="quote-mark">"</div>
+    <p class="testimonial-text">Arriving at the lodge, with the glaciers stretching to the horizon, I understood for the first time what it means to be truly present. Lumora doesn't sell accommodation — they sell perspective.</p>
+    <div class="testimonial-author">— Isabelle Moreau, Paris · Guest since 2019</div>
+  </div>
+
+  <div class="cta-banner">
+    <div class="cta-bg"></div>
+    <div class="cta-ov"></div>
+    <div class="cta-content">
+      <div class="section-label" style="margin-bottom:20px">Begin Your Journey</div>
+      <h2>Every great story<br>starts with a<br><em>single destination.</em></h2>
+      <p>Speak with one of our travel curators and discover which of our 48 properties belongs in your story.</p>
+      <button class="btn-gold" onclick="goto('dashboard')">View My Dashboard</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <button class="footer-logo" onclick="goto('home')">Lu<span>mo</span>ra</button>
+        <p>A curated collection of the world's most breathtaking hotel properties. Founded on the belief that beauty is transformative.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Collection</h4>
+        <ul>
+          <li><button onclick="goto('collection')">Mediterranean</button></li>
+          <li><button onclick="goto('collection')">Arctic & Nordic</button></li>
+          <li><button onclick="goto('collection')">Tropical Islands</button></li>
+          <li><button onclick="goto('collection')">Mountain Retreats</button></li>
+          <li><button onclick="goto('collection')">Desert Sanctuaries</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><button>Our Story</button></li>
+          <li><button>Selection Process</button></li>
+          <li><button onclick="goto('journal')">Journal</button></li>
+          <li><button>Press</button></li>
+          <li><button>Careers</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><button>hello@lumora.com</button></li>
+          <li><button>+44 20 7946 0821</button></li>
+          <li><button>Concierge Line</button></li>
+          <li><button>Partner With Us</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Lumora Hotels. All rights reserved.</span>
+      <div class="footer-langs">
+        <button class="active">EN</button>
+        <button>FR</button>
+        <button>DE</button>
+        <button>JA</button>
+        <button>PT</button>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE: USER DASHBOARD
+══════════════════════════════════════════════ -->
+<div id="page-dashboard" class="page">
+  <div class="dashboard">
+    <div class="dashboard-header">
+      <div class="section-label">Welcome Back</div>
+      <h1>Your <em>Travel Journey</em></h1>
+      <p>Manage your reservations, wishlist, and profile settings</p>
+    </div>
+
+    <div class="dashboard-tabs">
+      <button class="dashboard-tab active" onclick="switchDashboardTab(this,'overview')">Overview</button>
+      <button class="dashboard-tab" onclick="switchDashboardTab(this,'reservations')">My Reservations</button>
+      <button class="dashboard-tab" onclick="switchDashboardTab(this,'wishlist')">Wishlist</button>
+      <button class="dashboard-tab" onclick="switchDashboardTab(this,'profile')">Profile Settings</button>
+    </div>
+
+    <!-- OVERVIEW TAB -->
+    <div class="dashboard-content active" id="content-overview">
+      <div class="stats-grid" style="margin-bottom:48px">
+        <div class="stat-item">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Upcoming Trips</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">8</div>
+          <div class="stat-label">Properties Visited</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">24</div>
+          <div class="stat-label">Nights Stayed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">12</div>
+          <div class="stat-label">Saved Properties</div>
+        </div>
+      </div>
+      <div style="margin-bottom:32px">
+        <h2 style="font-size:28px;font-weight:400;color:var(--white);margin-bottom:24px">Upcoming Reservations</h2>
+      </div>
+      <div class="reservations-grid">
+        <div class="reservation-card">
+          <img src="https://images.unsplash.com/photo-1570213489059-0aac6626cade?w=400&q=85" alt="Caldera Villas" class="reservation-img">
+          <div class="reservation-info">
+            <h3>Caldera Villas Infinity Resort</h3>
+            <div class="reservation-meta">
+              <div>📍 Oia, Santorini — Greece</div>
+              <div>📅 Check-in: July 15, 2026 · Check-out: July 22, 2026</div>
+              <div>👤 2 Guests · Caldera Suite</div>
+              <div>💶 Total: € 12,880</div>
+            </div>
+            <span class="reservation-status confirmed">Confirmed</span>
+          </div>
+          <div class="reservation-actions">
+            <button class="btn-gold" style="padding:10px 20px;font-size:11px">View Details</button>
+            <button class="btn-outline" style="padding:9px 20px;font-size:11px">Modify Booking</button>
+          </div>
+        </div>
+        <div class="reservation-card">
+          <img src="https://images.unsplash.com/photo-1502786129293-79981df4e689?w=400&q=85" alt="Il Belvedere" class="reservation-img">
+          <div class="reservation-info">
+            <h3>Il Belvedere Estate</h3>
+            <div class="reservation-meta">
+              <div>📍 Val d'Orcia — Tuscany, Italy</div>
+              <div>📅 Check-in: August 10, 2026 · Check-out: August 17, 2026</div>
+              <div>👤 4 Guests · Villa Suite</div>
+              <div>💶 Total: € 8,400</div>
+            </div>
+            <span class="reservation-status confirmed">Confirmed</span>
+          </div>
+          <div class="reservation-actions">
+            <button class="btn-gold" style="padding:10px 20px;font-size:11px">View Details</button>
+            <button class="btn-outline" style="padding:9px 20px;font-size:11px">Modify Booking</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESERVATIONS TAB -->
+    <div class="dashboard-content" id="content-reservations">
+      <h2 style="font-size:32px;font-weight:400;color:var(--white);margin-bottom:32px">All <em>Reservations</em></h2>
+      <div class="reservations-grid">
+        <div class="reservation-card">
+          <img src="https://images.unsplash.com/photo-1570213489059-0aac6626cade?w=400&q=85" alt="Caldera Villas" class="reservation-img">
+          <div class="reservation-info">
+            <h3>Caldera Villas Infinity Resort</h3>
+            <div class="reservation-meta">
+              <div>📍 Oia, Santorini — Greece</div>
+              <div>📅 July 15 - July 22, 2026</div>
+              <div>👤 2 Guests · 7 Nights</div>
+              <div>💶 € 12,880</div>
+            </div>
+            <span class="reservation-status confirmed">Confirmed</span>
+          </div>
+          <div class="reservation-actions">
+            <button class="btn-gold" style="padding:10px 20px;font-size:11px">View Details</button>
+            <button class="btn-outline" style="padding:9px 20px;font-size:11px">Cancel Booking</button>
+          </div>
+        </div>
+        <div class="reservation-card">
+          <img src="https://images.unsplash.com/photo-1502786129293-79981df4e689?w=400&q=85" alt="Il Belvedere" class="reservation-img">
+          <div class="reservation-info">
+            <h3>Il Belvedere Estate</h3>
+            <div class="reservation-meta">
+              <div>📍 Val d'Orcia — Tuscany, Italy</div>
+              <div>📅 August 10 - August 17, 2026</div>
+              <div>👤 4 Guests · 7 Nights</div>
+              <div>💶 € 8,400</div>
+            </div>
+            <span class="reservation-status confirmed">Confirmed</span>
+          </div>
+          <div class="reservation-actions">
+            <button class="btn-gold" style="padding:10px 20px;font-size:11px">View Details</button>
+            <button class="btn-outline" style="padding:9px 20px;font-size:11px">Cancel Booking</button>
+          </div>
+        </div>
+        <div class="reservation-card">
+          <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=400&q=85" alt="Bamboo Forest" class="reservation-img">
+          <div class="reservation-info">
+            <h3>Bamboo Forest Ryokan</h3>
+            <div class="reservation-meta">
+              <div>📍 Arashiyama — Kyoto, Japan</div>
+              <div>📅 March 20 - March 25, 2026</div>
+              <div>👤 2 Guests · 5 Nights</div>
+              <div>💶 € 3,700</div>
+            </div>
+            <span class="reservation-status pending">Awaiting Payment</span>
+          </div>
+          <div class="reservation-actions">
+            <button class="btn-gold" style="padding:10px 20px;font-size:11px">Complete Payment</button>
+            <button class="btn-outline" style="padding:9px 20px;font-size:11px">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WISHLIST TAB -->
+    <div class="dashboard-content" id="content-wishlist">
+      <h2 style="font-size:32px;font-weight:400;color:var(--white);margin-bottom:32px">My <em>Wishlist</em></h2>
+      <div class="wishlist-grid">
+        <div class="hcard">
+          <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=600&q=85" alt="Maldives" style="height:300px">
+          <div class="hcard-overlay"></div>
+          <button class="hcard-wishlist active" onclick="toggleWishlist(event,this)">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </button>
+          <div class="hcard-info">
+            <div class="hcard-loc">North Malé Atoll — Maldives</div>
+            <div class="hcard-name">Overwater Pearl Villas</div>
+            <div class="hcard-meta">
+              <div class="hcard-price">From <strong>€ 2.100</strong> / night</div>
+              <div class="hcard-arrow">→</div>
+            </div>
+          </div>
+        </div>
+        <div class="hcard">
+          <img src="https://images.unsplash.com/photo-1502786129293-79981df4e689?w=600&q=85" alt="Tuscany" style="height:300px">
+          <div class="hcard-overlay"></div>
+          <button class="hcard-wishlist active" onclick="toggleWishlist(event,this)">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </button>
+          <div class="hcard-info">
+            <div class="hcard-loc">Val d'Orcia — Tuscany, Italy</div>
+            <div class="hcard-name">Il Belvedere Estate</div>
+            <div class="hcard-meta">
+              <div class="hcard-price">From <strong>€ 1.200</strong> / night</div>
+              <div class="hcard-arrow">→</div>
+            </div>
+          </div>
+        </div>
+        <div class="hcard">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=85" alt="Bali" style="height:300px">
+          <div class="hcard-overlay"></div>
+          <button class="hcard-wishlist active" onclick="toggleWishlist(event,this)">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </button>
+          <div class="hcard-info">
+            <div class="hcard-loc">Ubud — Bali, Indonesia</div>
+            <div class="hcard-name">Forest Temple Villa</div>
+            <div class="hcard-meta">
+              <div class="hcard-price">From <strong>€ 620</strong> / night</div>
+              <div class="hcard-arrow">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE TAB -->
+    <div class="dashboard-content" id="content-profile">
+      <h2 style="font-size:32px;font-weight:400;color:var(--white);margin-bottom:32px">Profile <em>Settings</em></h2>
+      <div class="profile-grid">
+        <div class="profile-sidebar">
+          <div class="profile-avatar-large">JM</div>
+          <div class="profile-name">Jean Moreau</div>
+          <div class="profile-email">jean@example.com</div>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <div class="profile-stat-num">8</div>
+              <div class="profile-stat-label">Properties</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-num">24</div>
+              <div class="profile-stat-label">Nights</div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <input type="text" class="form-input" value="Jean">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <input type="text" class="form-input" value="Moreau">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" value="jean@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-input" placeholder="+33 6 12 34 56 78">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nationality</label>
+              <input type="text" class="form-input" value="French">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Passport Number</label>
+              <input type="text" class="form-input" placeholder="Optional">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferences</label>
+            <textarea class="form-input" rows="4" placeholder="Tell us about your travel preferences, dietary requirements, or special requests..."></textarea>
+          </div>
+          <button class="btn-gold">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE: JOURNAL
+══════════════════════════════════════════════ -->
+<div id="page-journal" class="page">
+  <div class="journal-hero">
+    <div class="journal-hero-bg"></div>
+    <div class="journal-hero-ov"></div>
+    <div class="journal-hero-content">
+      <div class="section-label">Stories & Insights</div>
+      <h1>The <em>Lumora</em><br>Journal</h1>
+      <p>Stories from our properties, travel insights, and perspectives on the art of staying somewhere truly extraordinary.</p>
+    </div>
+  </div>
+
+  <div class="journal-section">
+    <div class="journal-grid">
+      <div class="journal-card" onclick="alert('Article detail page')">
+        <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=85" alt="Journal" class="journal-card-img">
+        <div class="journal-card-cat">Travel Guide</div>
+        <h3 class="journal-card-title">48 Hours in Santorini: A Curator's Perspective</h3>
+        <p class="journal-card-excerpt">Beyond the famous sunsets lies a network of quiet villages, hidden vineyards, and stone pathways that few visitors discover.</p>
+        <div class="journal-card-meta">
+          <span>May 8, 2026</span>
+          <span>·</span>
+          <span>8 min read</span>
+        </div>
+      </div>
+      <div class="journal-card" onclick="alert('Article detail page')">
+        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=85" alt="Journal" class="journal-card-img">
+        <div class="journal-card-cat">Philosophy</div>
+        <h3 class="journal-card-title">The Architecture of Silence</h3>
+        <p class="journal-card-excerpt">Why the most beautiful hotels in the world share one thing in common: the deliberate absence of noise.</p>
+        <div class="journal-card-meta">
+          <span>May 5, 2026</span>
+          <span>·</span>
+          <span>12 min read</span>
+        </div>
+      </div>
+      <div class="journal-card" onclick="alert('Article detail page')">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=85" alt="Journal" class="journal-card-img">
+        <div class="journal-card-cat">Property Spotlight</div>
+        <h3 class="journal-card-title">Inside the Arctic Glass Lodge</h3>
+        <p class="journal-card-excerpt">How one property in Norway's Lofoten Islands redefines what it means to experience the northern lights.</p>
+        <div class="journal-card-meta">
+          <span>May 1, 2026</span>
+          <span>·</span>
+          <span>6 min read</span>
+        </div>
+      </div>
+      <div class="journal-card" onclick="alert('Article detail page')">
+        <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=85" alt="Journal" class="journal-card-img">
+        <div class="journal-card-cat">Culture</div>
+        <h3 class="journal-card-title">The Ryokan Ritual: Japan's Art of Hospitality</h3>
+        <p class="journal-card-excerpt">An exploration of omotenashi — the centuries-old philosophy that transforms a simple stay into a spiritual practice.</p>
+        <div class="journal-card-meta">
+          <span>April 28, 2026</span>
+          <span>·</span>
+          <span>10 min read</span>
+        </div>
+      </div>
+      <div class="journal-card" onclick="alert('Article detail page')">
+        <img src="https://images.unsplash.com/photo-1502786129293-79981df4e689?w=600&q=85" alt="Journal" class="journal-card-img">
+        <div class="journal-card-cat">Gastronomy</div>
+        <h3 class="journal-card-title">Tuscany's Secret Vineyards</h3>
+        <p class="journal-card-excerpt">The family-owned estates producing some of Italy's most extraordinary wines — and why you've never heard of them.</p>
+        <div class="journal-card-meta">
+          <span>April 25, 2026</span>
+          <span>·</span>
+          <span>7 min read</span>
+        </div>
+      </div>
+      <div class="journal-card" onclick="alert('Article detail page')">
+        <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600&q=85" alt="Journal" class="journal-card-img">
+        <div class="journal-card-cat">Sustainability</div>
+        <h3 class="journal-card-title">Luxury Without Impact</h3>
+        <p class="journal-card-excerpt">How our partner properties are pioneering regenerative tourism in some of the world's most fragile ecosystems.</p>
+        <div class="journal-card-meta">
+          <span>April 20, 2026</span>
+          <span>·</span>
+          <span>9 min read</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <button class="footer-logo" onclick="goto('home')">Lu<span>mo</span>ra</button>
+        <p>A curated collection of the world's most breathtaking hotel properties.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Collection</h4>
+        <ul>
+          <li><button onclick="goto('collection')">All Properties</button></li>
+          <li><button>Mediterranean</button></li>
+          <li><button>Arctic & Nordic</button></li>
+          <li><button>Tropical Islands</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><button>Our Story</button></li>
+          <li><button onclick="goto('journal')">Journal</button></li>
+          <li><button>Careers</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><button>hello@lumora.com</button></li>
+          <li><button>+44 20 7946 0821</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Lumora Hotels. All rights reserved.</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE: LOGIN
+══════════════════════════════════════════════ -->
+<div id="page-login" class="page">
+  <div style="min-height:100vh;position:relative;display:flex">
+    <div style="position:fixed;inset:0;z-index:0;background-image:url('https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1800&q=90');background-size:cover;background-position:center"></div>
+    <div style="position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,rgba(0,0,0,0.94) 0%,rgba(0,0,0,0.65) 100%)"></div>
+    <div style="position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;min-height:100vh;width:100%">
+
+      <!-- LEFT -->
+      <div style="display:flex;flex-direction:column;justify-content:space-between;padding:56px">
+        <button class="logo" onclick="goto('home')">Lu<span>mo</span>ra</button>
+        <div>
+          <div class="section-label">Member Access</div>
+          <h2 style="font-size:clamp(32px,4vw,56px);font-weight:400;line-height:1.1;color:var(--white);margin-top:20px;margin-bottom:20px;letter-spacing:-0.02em">
+            Your world of<br><em style="font-style:italic;color:var(--accent)">extraordinary</em><br>awaits.
+          </h2>
+          <p style="font-family:'Helvetica Neue',sans-serif;font-size:14px;color:rgba(255,255,255,0.45);line-height:1.75;max-width:400px">
+            Sign in to access your reservations, saved properties, and personalized travel recommendations from your dedicated curator.
+          </p>
+        </div>
+        <div style="font-family:'Georgia',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,0.25);border-left:2px solid var(--accent);padding-left:20px;line-height:1.7">
+          "The world is a book, and those who do not travel read only one page."<br>
+          <span style="font-size:12px;color:rgba(255,255,255,0.18);font-style:normal;letter-spacing:0.1em">— Saint Augustine</span>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div style="display:flex;align-items:center;justify-content:center;padding:56px;border-left:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.45);backdrop-filter:blur(24px)">
+        <div style="width:100%;max-width:420px">
+          <button onclick="goto('home')" style="font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);background:transparent;border:none;cursor:pointer;margin-bottom:28px;display:block;transition:color 0.3s" onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">← Back to Home</button>
+
+          <div style="display:flex;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:44px">
+            <button id="tab-signin" onclick="switchAuthTab('signin')" style="font-family:'Helvetica Neue',sans-serif;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--white);padding:0 0 16px;margin-right:32px;background:transparent;border:none;border-bottom:2px solid var(--accent);margin-bottom:-1px;cursor:pointer">Sign In</button>
+            <button id="tab-register" onclick="switchAuthTab('register')" style="font-family:'Helvetica Neue',sans-serif;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0 0 16px;margin-right:32px;background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer">Create Account</button>
+          </div>
+
+          <!-- SIGN IN FORM -->
+          <form id="form-signin" onsubmit="handleLogin(event)">
+            <div style="margin-bottom:22px">
+              <label style="display:block;font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px">Email Address</label>
+              <input type="email" name="email" placeholder="your@email.com" required style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Helvetica Neue',sans-serif;font-size:14px;padding:14px 16px;outline:none;transition:border-color 0.3s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+            </div>
+            <div style="margin-bottom:10px">
+              <label style="display:block;font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px">Password</label>
+              <input type="password" name="password" placeholder="••••••••" required style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Helvetica Neue',sans-serif;font-size:14px;padding:14px 16px;outline:none;transition:border-color 0.3s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-bottom:24px">
+              <button type="button" style="font-family:'Helvetica Neue',sans-serif;font-size:11px;color:rgba(255,255,255,0.25);background:transparent;border:none;cursor:pointer">Forgot password?</button>
+            </div>
+            <button type="submit" id="btn-signin" style="width:100%;font-family:'Helvetica Neue',sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);background:var(--accent);border:none;padding:17px;cursor:pointer;margin-bottom:22px;transition:opacity 0.3s">Sign In to Lumora</button>
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px">
+              <div style="flex:1;height:1px;background:rgba(255,255,255,0.07)"></div>
+              <span style="font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.18)">or continue with</span>
+              <div style="flex:1;height:1px;background:rgba(255,255,255,0.07)"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <button type="button" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.5);font-family:'Helvetica Neue',sans-serif;font-size:12px;cursor:pointer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                Google
+              </button>
+              <button type="button" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.5);font-family:'Helvetica Neue',sans-serif;font-size:12px;cursor:pointer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                Facebook
+              </button>
+            </div>
+          </form>
+
+          <!-- REGISTER FORM -->
+          <form id="form-register" onsubmit="handleRegister(event)" style="display:none">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
+              <div>
+                <label style="display:block;font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px">First Name</label>
+                <input type="text" name="firstName" placeholder="Jean" required style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Helvetica Neue',sans-serif;font-size:14px;padding:14px 16px;outline:none" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+              </div>
+              <div>
+                <label style="display:block;font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px">Last Name</label>
+                <input type="text" name="lastName" placeholder="Moreau" required style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Helvetica Neue',sans-serif;font-size:14px;padding:14px 16px;outline:none" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+              </div>
+            </div>
+            <div style="margin-bottom:22px">
+              <label style="display:block;font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px">Email Address</label>
+              <input type="email" name="email" placeholder="your@email.com" required style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Helvetica Neue',sans-serif;font-size:14px;padding:14px 16px;outline:none" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+            </div>
+            <div style="margin-bottom:22px">
+              <label style="display:block;font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px">Password</label>
+              <input type="password" name="password" placeholder="Min. 8 characters" required minlength="8" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Helvetica Neue',sans-serif;font-size:14px;padding:14px 16px;outline:none" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+            </div>
+            <button type="submit" id="btn-register" style="width:100%;font-family:'Helvetica Neue',sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);background:var(--accent);border:none;padding:17px;cursor:pointer;margin-bottom:18px;transition:opacity 0.3s">Create My Account</button>
+            <p style="font-family:'Helvetica Neue',sans-serif;font-size:11px;color:rgba(255,255,255,0.22);line-height:1.6;text-align:center">By creating an account you agree to our Terms of Service and Privacy Policy.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE: DESTINATIONS
+══════════════════════════════════════════════ -->
+<div id="page-destinations" class="page">
+  <div style="height:60vh;min-height:460px;position:relative;display:flex;align-items:flex-end;overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1800&q=90');background-size:cover;background-position:center 40%;animation:slowZoom 18s ease-in-out infinite alternate"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0.1) 100%)"></div>
+    <div style="position:relative;z-index:2;padding:0 56px 64px">
+      <div class="section-label">Our Properties</div>
+      <h1 style="font-size:clamp(36px,5vw,64px);font-weight:400;line-height:1.1;letter-spacing:-0.02em;color:var(--white);margin-top:16px">48 <em style="font-style:italic;color:var(--accent)">Extraordinary</em><br>Destinations</h1>
+      <p style="font-family:'Helvetica Neue',sans-serif;font-size:14px;color:rgba(255,255,255,0.5);margin-top:14px;max-width:480px;line-height:1.7">Each property hand-selected for its breathtaking location, architectural harmony, and irreplaceable sense of place.</p>
+    </div>
+  </div>
+
+  <div style="padding:0 56px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,0.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50">
+    <div style="display:flex;overflow-x:auto;scrollbar-width:none" id="dest-filters">
+      <button onclick="filterDest(this,'all')" style="font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--white);padding:20px 24px;background:transparent;border:none;border-bottom:2px solid var(--accent);cursor:pointer;white-space:nowrap;margin-bottom:-1px">All Regions</button>
+      <button onclick="filterDest(this,'mediterranean')" style="font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);padding:20px 24px;background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;margin-bottom:-1px">Mediterranean</button>
+      <button onclick="filterDest(this,'arctic')" style="font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);padding:20px 24px;background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;margin-bottom:-1px">Arctic & Nordic</button>
+      <button onclick="filterDest(this,'tropical')" style="font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);padding:20px 24px;background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;margin-bottom:-1px">Tropical Islands</button>
+      <button onclick="filterDest(this,'mountain')" style="font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);padding:20px 24px;background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;margin-bottom:-1px">Mountain</button>
+    </div>
+    <div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.3);white-space:nowrap;padding-left:24px">Showing <span style="color:var(--accent)">12</span> of 48</div>
+  </div>
+
+  <div style="padding:60px 56px 80px">
+    <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:16px">
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1570213489059-0aac6626cade?w=1200&q=85" alt="Santorini" style="height:460px">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-badge">Editor's Choice</div>
+        <div class="hcard-info">
+          <div class="hcard-loc">Oia, Santorini — Greece</div>
+          <div class="hcard-name">Caldera Villas Infinity Resort</div>
+          <div class="hcard-meta"><div class="hcard-price">From <strong>€ 1.840</strong> / night</div><div class="hcard-arrow">→</div></div>
+        </div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=900&q=85" alt="Maldives" style="height:460px">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-badge">New</div>
+        <div class="hcard-info">
+          <div class="hcard-loc">North Malé Atoll — Maldives</div>
+          <div class="hcard-name">Overwater Pearl Villas</div>
+          <div class="hcard-meta"><div class="hcard-price">From <strong>€ 2.100</strong> / night</div><div class="hcard-arrow">→</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8?w=800&q=85" alt="Lofoten" style="height:360px">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-info"><div class="hcard-loc">Lofoten Islands — Norway</div><div class="hcard-name">Arctic Glass Lodge</div><div class="hcard-meta"><div class="hcard-price">From <strong>€ 980</strong> / night</div><div class="hcard-arrow">→</div></div></div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=85" alt="Kyoto" style="height:360px">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-info"><div class="hcard-loc">Arashiyama — Kyoto, Japan</div><div class="hcard-name">Bamboo Forest Ryokan</div><div class="hcard-meta"><div class="hcard-price">From <strong>€ 740</strong> / night</div><div class="hcard-arrow">→</div></div></div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1502786129293-79981df4e689?w=800&q=85" alt="Tuscany" style="height:360px">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-info"><div class="hcard-loc">Val d'Orcia — Tuscany, Italy</div><div class="hcard-name">Il Belvedere Estate</div><div class="hcard-meta"><div class="hcard-price">From <strong>€ 1.200</strong> / night</div><div class="hcard-arrow">→</div></div></div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=800&q=85" alt="Patagonia" style="height:360px">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-info"><div class="hcard-loc">Torres del Paine — Patagonia</div><div class="hcard-name">Wild Range Eco Lodge</div><div class="hcard-meta"><div class="hcard-price">From <strong>€ 890</strong> / night</div><div class="hcard-arrow">→</div></div></div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=85" alt="Bali" style="height:360px">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-badge">Popular</div>
+        <div class="hcard-info"><div class="hcard-loc">Ubud — Bali, Indonesia</div><div class="hcard-name">Forest Temple Villa</div><div class="hcard-meta"><div class="hcard-price">From <strong>€ 620</strong> / night</div><div class="hcard-arrow">→</div></div></div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=85" alt="Cappadocia" style="height:360px">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-info"><div class="hcard-loc">Göreme — Cappadocia, Turkey</div><div class="hcard-name">Cave Horizon Hotel</div><div class="hcard-meta"><div class="hcard-price">From <strong>€ 480</strong> / night</div><div class="hcard-arrow">→</div></div></div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=800&q=85" alt="Amalfi" style="height:360px">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-info"><div class="hcard-loc">Positano — Amalfi Coast, Italy</div><div class="hcard-name">Cliffside Terrazza</div><div class="hcard-meta"><div class="hcard-price">From <strong>€ 1.100</strong> / night</div><div class="hcard-arrow">→</div></div></div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=800&q=85" alt="Maldives 2" style="height:360px">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-info"><div class="hcard-loc">Rangali Island — Maldives</div><div class="hcard-name">Coral Atoll Retreat</div><div class="hcard-meta"><div class="hcard-price">From <strong>€ 1.780</strong> / night</div><div class="hcard-arrow">→</div></div></div>
+      </div>
+      <div class="hcard" onclick="goto('detail')">
+        <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=85" alt="Dubai" style="height:360px">
+        <div class="hcard-overlay"></div>
+        <div class="hcard-info"><div class="hcard-loc">Palm Jumeirah — Dubai, UAE</div><div class="hcard-name">Sky Pavilion Suites</div><div class="hcard-meta"><div class="hcard-price">From <strong>€ 1.560</strong> / night</div><div class="hcard-arrow">→</div></div></div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:60px 0 0;border-top:1px solid rgba(255,255,255,0.06);margin-top:40px">
+      <p style="font-family:'Helvetica Neue',sans-serif;font-size:13px;color:rgba(255,255,255,0.3);margin-bottom:24px">Showing <span style="color:var(--accent)">12</span> of <span style="color:var(--accent)">48</span> properties</p>
+      <button class="btn-gold">Load More Properties</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand"><button class="footer-logo" onclick="goto('home')">Lu<span>mo</span>ra</button><p>A curated collection of the world's most breathtaking hotel properties.</p></div>
+      <div class="footer-col"><h4>Collection</h4><ul><li><button onclick="goto('collection')">Mediterranean</button></li><li><button onclick="goto('collection')">Arctic & Nordic</button></li><li><button onclick="goto('collection')">Tropical Islands</button></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><button>Our Story</button></li><li><button onclick="goto('journal')">Journal</button></li><li><button>Careers</button></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><button>hello@lumora.com</button></li><li><button>+44 20 7946 0821</button></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span class="footer-copy">© 2025 Lumora Hotels. All rights reserved.</span></div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE: HOTEL DETAIL
+══════════════════════════════════════════════ -->
+<div id="page-detail" class="page">
+  <div style="height:100vh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1570213489059-0aac6626cade?w=1800&q=90');background-size:cover;background-position:center;animation:slowZoom 20s ease-in-out infinite alternate"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.3) 55%,rgba(0,0,0,0.1) 100%)"></div>
+    <div style="position:relative;z-index:2;padding:0 56px 64px;display:flex;align-items:flex-end;justify-content:space-between;gap:40px">
+      <div>
+        <div class="section-label">Oia, Santorini — Greece</div>
+        <h1 style="font-size:clamp(36px,5vw,64px);font-weight:400;line-height:1.05;letter-spacing:-0.02em;color:var(--white);margin-bottom:20px">Caldera Villas<br><em style="font-style:italic;color:var(--accent)">Infinity Resort</em></h1>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <span style="font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;background:var(--accent);color:var(--black);padding:5px 12px">Editor's Choice</span>
+          <span style="font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:5px 12px">5 Stars</span>
+          <span style="font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:5px 12px">Infinity Pool</span>
+          <span style="font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:5px 12px">Private Beach</span>
+        </div>
+      </div>
+      <div style="min-width:300px;max-width:340px;background:rgba(0,0,0,0.55);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);padding:32px">
+        <div style="font-family:'Helvetica Neue',sans-serif;font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px;letter-spacing:0.08em">Starting from</div>
+        <div style="font-size:38px;font-weight:400;color:var(--white);font-family:'Georgia',serif;line-height:1;margin-bottom:4px"><span style="font-size:18px;color:var(--accent)">€</span> 1.840</div>
+        <div style="font-family:'Helvetica Neue',sans-serif;font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:24px">per night · taxes included</div>
+        <div style="display:flex;align-items:center;gap:10px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:20px">
+          <div><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span></div>
+          <div style="font-family:'Helvetica Neue',sans-serif;font-size:11px;color:rgba(255,255,255,0.4)">9.8 / 10 · 847 reviews</div>
+        </div>
+        <button onclick="goto('login')" style="display:block;width:100%;font-family:'Helvetica Neue',sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);background:var(--accent);border:none;padding:16px;cursor:pointer;margin-bottom:10px">Reserve This Property</button>
+        <button style="display:block;width:100%;font-family:'Helvetica Neue',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);background:transparent;border:1px solid rgba(255,255,255,0.1);padding:13px;cursor:pointer">Request More Info</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:10px;font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:16px 56px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(10,10,10,0.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50">
+    <button onclick="goto('home')" style="color:rgba(255,255,255,0.35);background:transparent;border:none;cursor:pointer;font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase">Home</button>
+    <span style="color:rgba(255,255,255,0.15)">›</span>
+    <button onclick="goto('destinations')" style="color:rgba(255,255,255,0.35);background:transparent;border:none;cursor:pointer;font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase">Destinations</button>
+    <span style="color:rgba(255,255,255,0.15)">›</span>
+    <span style="color:rgba(255,255,255,0.6)">Caldera Villas Infinity Resort</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:260px 260px;gap:4px">
+    <div style="grid-row:1/3;overflow:hidden"><img src="https://images.unsplash.com/photo-1570213489059-0aac6626cade?w=1200&q=85" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
+    <div style="overflow:hidden"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=85" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
+    <div style="overflow:hidden"><img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=600&q=85" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
+    <div style="overflow:hidden"><img src="https://images.unsplash.com/photo-1562778612-e1e0cda9915c?w=600&q=85" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
+    <div style="overflow:hidden"><img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&q=85" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 360px;gap:80px;padding:80px 56px 120px;align-items:start">
+    <div>
+      <div style="margin-bottom:56px">
+        <div class="section-label" style="margin-bottom:14px">About the Property</div>
+        <h2 style="font-size:28px;font-weight:400;color:var(--white);margin-bottom:18px">A sanctuary carved into the <em style="font-style:italic;color:var(--accent)">caldera</em></h2>
+        <p style="font-family:'Helvetica Neue',sans-serif;font-size:15px;color:rgba(255,255,255,0.5);line-height:1.85;margin-bottom:14px">Perched on the volcanic cliffs of Oia, Caldera Villas Infinity Resort is one of the most sought-after properties in the Aegean. Carved directly into the caldera, each villa offers an uninterrupted panorama of the sea, the sunset, and the volcanic islands below.</p>
+        <p style="font-family:'Helvetica Neue',sans-serif;font-size:15px;color:rgba(255,255,255,0.5);line-height:1.85">The resort features 12 private villas, each with its own infinity pool that appears to merge seamlessly with the Aegean. The design honors the traditional Cycladic architecture — whitewashed walls, curved forms — while delivering every modern luxury discreetly.</p>
+      </div>
+
+      <div style="margin-bottom:56px">
+        <h2 style="font-size:28px;font-weight:400;color:var(--white);margin-bottom:18px">Amenities & <em style="font-style:italic;color:var(--accent)">Services</em></h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(255,255,255,0.06)">
+          <div style="padding:20px 18px;border-right:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:12px"><span style="color:var(--accent)">✦</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.55)">24h Concierge</span></div>
+          <div style="padding:20px 18px;border-right:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:12px"><span style="color:var(--accent)">✦</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.55)">Private Villa</span></div>
+          <div style="padding:20px 18px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:12px"><span style="color:var(--accent)">✦</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.55)">Butler Service</span></div>
+          <div style="padding:20px 18px;border-right:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:12px"><span style="color:var(--accent)">✦</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.55)">Spa & Wellness</span></div>
+          <div style="padding:20px 18px;border-right:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:12px"><span style="color:var(--accent)">✦</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.55)">Infinity Pool</span></div>
+          <div style="padding:20px 18px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:12px"><span style="color:var(--accent)">✦</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.55)">Fine Dining</span></div>
+          <div style="padding:20px 18px;border-right:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:12px"><span style="color:var(--accent)">✦</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.55)">Private Transfer</span></div>
+          <div style="padding:20px 18px;border-right:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:12px"><span style="color:var(--accent)">✦</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.55)">Sunset Terrace</span></div>
+          <div style="padding:20px 18px;display:flex;align-items:center;gap:12px"><span style="color:var(--accent)">✦</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.55)">High-Speed WiFi</span></div>
+        </div>
+      </div>
+
+      <div>
+        <h2 style="font-size:28px;font-weight:400;color:var(--white);margin-bottom:18px">Room <em style="font-style:italic;color:var(--accent)">Types</em></h2>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:background 0.3s" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
+            <div><div style="font-size:17px;font-weight:400;color:var(--white);margin-bottom:4px">Caldera Suite</div><div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">80m² · Caldera view · Private plunge pool</div></div>
+            <div style="text-align:right"><div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.4)">From</div><div style="font-family:'Georgia',serif;font-size:20px;font-weight:400;color:var(--white)">€ 1.840</div><div style="font-family:'Helvetica Neue',sans-serif;font-size:11px;color:rgba(255,255,255,0.3)">/ night</div></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:background 0.3s" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
+            <div><div style="font-size:17px;font-weight:400;color:var(--white);margin-bottom:4px">Infinity Villa</div><div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">140m² · Private infinity pool · Outdoor bedroom</div></div>
+            <div style="text-align:right"><div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.4)">From</div><div style="font-family:'Georgia',serif;font-size:20px;font-weight:400;color:var(--white)">€ 3.200</div><div style="font-family:'Helvetica Neue',sans-serif;font-size:11px;color:rgba(255,255,255,0.3)">/ night</div></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:background 0.3s" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
+            <div><div style="font-size:17px;font-weight:400;color:var(--white);margin-bottom:4px">Grand Caldera Villa</div><div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">220m² · Private chef · 2 pools</div></div>
+            <div style="text-align:right"><div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.4)">From</div><div style="font-family:'Georgia',serif;font-size:20px;font-weight:400;color:var(--white)">€ 6.500</div><div style="font-family:'Helvetica Neue',sans-serif;font-size:11px;color:rgba(255,255,255,0.3)">/ night</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:sticky;top:80px">
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);padding:28px;margin-bottom:16px">
+        <div style="font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:18px">Property Details</div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">Location</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.7)">Oia, Santorini</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">Category</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.7)">5-Star Resort</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">Villas</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.7)">12 Private</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">Check-in</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.7)">From 15:00</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0"><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">Min. Stay</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.7)">2 nights</span></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);padding:28px;margin-bottom:16px">
+        <div style="font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:18px">Guest Reviews</div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">Overall</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:var(--accent)">9.8 / 10</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">Location</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.7)">10 / 10</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">Service</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.7)">9.9 / 10</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0"><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.35)">Cleanliness</span><span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.7)">9.7 / 10</span></div>
+      </div>
+      <button onclick="goto('login')" style="display:block;width:100%;font-family:'Helvetica Neue',sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);background:var(--accent);border:none;padding:16px;cursor:pointer">Reserve This Property</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand"><button class="footer-logo" onclick="goto('home')">Lu<span>mo</span>ra</button><p>A curated collection of the world's most breathtaking hotel properties.</p></div>
+      <div class="footer-col"><h4>Collection</h4><ul><li><button onclick="goto('collection')">Mediterranean</button></li><li><button onclick="goto('collection')">Arctic & Nordic</button></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><button>Our Story</button></li><li><button onclick="goto('journal')">Journal</button></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><button>hello@lumora.com</button></li><li><button>+44 20 7946 0821</button></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span class="footer-copy">© 2025 Lumora Hotels. All rights reserved.</span></div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     JAVASCRIPT - API INTEGRATION
+══════════════════════════════════════════════ -->
+<script>
+const API_URL = 'http://localhost:8080/api/v1';
+
+// Auth State
+let authToken = localStorage.getItem('token');
+let currentUser = JSON.parse(localStorage.getItem('user') || 'null');
+
+// API Helper
+async function api(endpoint, options = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (authToken) headers.Authorization = `Bearer ${authToken}`;
+  
+  try {
+    const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Request failed');
+    return data;
+  } catch (err) {
+    console.error('API Error:', err);
+    throw err;
+  }
+}
+
+// Login Handler
+async function handleLogin(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  const original = btn.textContent;
+  
+  try {
+    btn.disabled = true;
+    btn.textContent = 'Signing in...';
+    
+    const res = await api('/users/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: form.email.value,
+        password: form.password.value
+      })
+    });
+    
+    authToken = res.data.accessToken;
+    localStorage.setItem('token', authToken);
+    
+    const profile = await api('/users/me');
+    currentUser = profile.data;
+    localStorage.setItem('user', JSON.stringify(currentUser));
+    
+    updateNav();
+    alert('Login successful!');
+    goto('dashboard');
+  } catch (err) {
+    alert('Login failed: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = original;
+  }
+}
+
+// Register Handler
+async function handleRegister(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  const original = btn.textContent;
+  
+  try {
+    btn.disabled = true;
+    btn.textContent = 'Creating account...';
+    
+    const res = await api('/users/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        fullName: `${form.firstName.value} ${form.lastName.value}`,
+        email: form.email.value,
+        password: form.password.value
+      })
+    });
+    
+    authToken = res.data.accessToken;
+    localStorage.setItem('token', authToken);
+    
+    const profile = await api('/users/me');
+    currentUser = profile.data;
+    localStorage.setItem('user', JSON.stringify(currentUser));
+    
+    updateNav();
+    alert('Account created successfully!');
+    goto('dashboard');
+  } catch (err) {
+    alert('Registration failed: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = original;
+  }
+}
+
+// Load Dashboard
+async function loadDashboard() {
+  if (!authToken) { goto('login'); return; }
+  
+  try {
+    const profile = await api('/users/me');
+    currentUser = profile.data;
+    
+    document.getElementById('profile-avatar').textContent = getInitials(currentUser.fullName);
+    document.getElementById('profile-name').textContent = currentUser.fullName;
+    document.getElementById('profile-email').textContent = currentUser.email;
+    
+    const reservations = await api('/reservations?page=0&size=10');
+    renderReservations(reservations.data);
+  } catch (err) {
+    console.error('Dashboard load failed:', err);
+    alert('Failed to load dashboard');
+  }
+}
+
+function renderReservations(data) {
+  const container = document.getElementById('upcoming-reservations');
+  if (!container) return;
+  
+  if (!data.content || data.content.length === 0) {
+    container.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4)">No reservations found</p>';
+    return;
+  }
+  
+  container.innerHTML = data.content.map(r => `
+    <div class="reservation-card">
+      <img src="https://images.unsplash.com/photo-1570213489059-0aac6626cade?w=400&q=85" class="reservation-img">
+      <div class="reservation-info">
+        <h3>${r.hotelName}</h3>
+        <div class="reservation-meta">
+          <div>📅 ${r.checkInDate} - ${r.checkOutDate}</div>
+          <div>👤 ${r.numberOfGuests} Guests</div>
+          <div>💶 € ${r.totalPrice}</div>
+        </div>
+        <span class="reservation-status ${r.status.toLowerCase()}">${r.status}</span>
+      </div>
+      <div class="reservation-actions">
+        <button class="btn-gold" style="padding:10px 20px;font-size:11px">View</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Navigation
+function goto(page) {
+  if (page === 'dashboard' && !authToken) { goto('login'); return; }
+  if (page === 'login' && authToken) { goto('dashboard'); return; }
+  
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + page);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  
+  if (page === 'dashboard') loadDashboard();
+  
+  closeUserMenu();
+}
+
+function gotoDashboardTab(tab) {
+  goto('dashboard');
+  setTimeout(() => {
+    const btn = document.querySelector(`[onclick*="switchDashboardTab(this,'${tab}')"]`);
+    if (btn) btn.click();
+  }, 100);
+}
+
+function switchDashboardTab(btn, id) {
+  document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.dashboard-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('content-' + id).classList.add('active');
+}
+
+function toggleUserMenu() {
+  document.getElementById('user-dropdown').classList.toggle('active');
+}
+
+function closeUserMenu() {
+  document.getElementById('user-dropdown').classList.remove('active');
+}
+
+function logout() {
+  authToken = null;
+  currentUser = null;
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  updateNav();
+  alert('Logged out successfully');
+  goto('home');
+}
+
+function updateNav() {
+  const loginBtn = document.getElementById('nav-login-btn');
+  const userMenu = document.getElementById('nav-user-menu');
+  
+  if (authToken && currentUser) {
+    loginBtn.style.display = 'none';
+    userMenu.style.display = 'block';
+    document.getElementById('user-avatar').textContent = getInitials(currentUser.fullName);
+    document.getElementById('dropdown-name').textContent = currentUser.fullName;
+    document.getElementById('dropdown-email').textContent = currentUser.email;
+  } else {
+    loginBtn.style.display = 'block';
+    userMenu.style.display = 'none';
+  }
+}
+
+function getInitials(name) {
+  return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+}
+
+function switchAuthTab(tab) {
+  const isSignin = tab === 'signin';
+  document.getElementById('form-signin').style.display = isSignin ? 'block' : 'none';
+  document.getElementById('form-register').style.display = isSignin ? 'none' : 'block';
+  document.getElementById('tab-signin').style.borderBottomColor = isSignin ? 'var(--accent)' : 'transparent';
+  document.getElementById('tab-signin').style.color = isSignin ? 'var(--white)' : 'rgba(255,255,255,0.3)';
+  document.getElementById('tab-register').style.borderBottomColor = isSignin ? 'transparent' : 'var(--accent)';
+  document.getElementById('tab-register').style.color = isSignin ? 'rgba(255,255,255,0.3)' : 'var(--white)';
+}
+
+function filterDest(btn, region) {
+  document.querySelectorAll('#dest-filters button').forEach(b => {
+    b.style.color = 'rgba(255,255,255,0.35)';
+    b.style.borderBottomColor = 'transparent';
+  });
+  btn.style.color = 'var(--white)';
+  btn.style.borderBottomColor = 'var(--accent)';
+}
+
+// Wishlist toggle
+function toggleWishlist(event, btn) {
+  event.stopPropagation();
+  btn.classList.toggle('active');
+  const badge = document.querySelector('.nav-badge');
+  if (!badge) return;
+  let count = parseInt(badge.textContent) || 0;
+  badge.textContent = btn.classList.contains('active') ? count + 1 : Math.max(0, count - 1);
+}
+
+document.addEventListener('click', e => {
+  const menu = document.querySelector('.user-menu');
+  if (menu && !menu.contains(e.target)) closeUserMenu();
+});
+
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('main-nav');
+  if (window.scrollY > 100) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  updateNav();
+});
+</script>
+</body>
+</html>
